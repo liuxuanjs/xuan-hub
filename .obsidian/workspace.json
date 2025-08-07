@@ -1,0 +1,225 @@
+{
+  "main": {
+    "id": "4efbced8cb8883c4",
+    "type": "split",
+    "children": [
+      {
+        "id": "cbf3205c0975e2c8",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "f073404c1168b161",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "前端开发知识库/CSS/知识点/002-CSS-选择符.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "002-CSS-选择符"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "c08c713cc90149da",
+    "type": "split",
+    "children": [
+      {
+        "id": "3e3e3da15cd0eb60",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "c7c1f8dfa9b3d7d0",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {
+                "sortOrder": "alphabetical",
+                "autoReveal": false
+              },
+              "icon": "lucide-folder-closed",
+              "title": "文件列表"
+            }
+          },
+          {
+            "id": "c98f5aef9f1e88d6",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              },
+              "icon": "lucide-search",
+              "title": "搜索"
+            }
+          },
+          {
+            "id": "22b798b4183f48d1",
+            "type": "leaf",
+            "state": {
+              "type": "bookmarks",
+              "state": {},
+              "icon": "lucide-bookmark",
+              "title": "书签"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300
+  },
+  "right": {
+    "id": "9f87029531bd9cde",
+    "type": "split",
+    "children": [
+      {
+        "id": "e846ed8f3dd69266",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "8c4ddf7d44619249",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "file": "前端开发知识库/CSS/知识点/002-CSS-选择符.md",
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-coming-in",
+              "title": "002-CSS-选择符 的反向链接列表"
+            }
+          },
+          {
+            "id": "06a41f79cf75f6f1",
+            "type": "leaf",
+            "state": {
+              "type": "outgoing-link",
+              "state": {
+                "file": "前端开发知识库/CSS/知识点/002-CSS-选择符.md",
+                "linksCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-going-out",
+              "title": "002-CSS-选择符 的出链列表"
+            }
+          },
+          {
+            "id": "2695f299882313fb",
+            "type": "leaf",
+            "state": {
+              "type": "tag",
+              "state": {
+                "sortOrder": "frequency",
+                "useHierarchy": true,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-tags",
+              "title": "标签"
+            }
+          },
+          {
+            "id": "39574fa30c21fde7",
+            "type": "leaf",
+            "state": {
+              "type": "outline",
+              "state": {
+                "file": "前端开发知识库/CSS/知识点/002-CSS-选择符.md",
+                "followCursor": false,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-list",
+              "title": "002-CSS-选择符 的大纲"
+            }
+          },
+          {
+            "id": "50b091d420f68bf9",
+            "type": "leaf",
+            "state": {
+              "type": "calendar",
+              "state": {},
+              "icon": "calendar-with-checkmark",
+              "title": "Calendar"
+            }
+          },
+          {
+            "id": "0fdc31c118eebe15",
+            "type": "leaf",
+            "state": {
+              "type": "advanced-tables-toolbar",
+              "state": {},
+              "icon": "spreadsheet",
+              "title": "Advanced Tables"
+            }
+          }
+        ],
+        "currentTab": 5
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300
+  },
+  "left-ribbon": {
+    "hiddenItems": {
+      "switcher:打开快速切换": false,
+      "graph:查看关系图谱": false,
+      "canvas:新建白板": false,
+      "daily-notes:打开/创建今天的日记": false,
+      "templates:插入模板": false,
+      "command-palette:打开命令面板": false,
+      "obsidian-advanced-slides:Show Slide Preview": false,
+      "table-editor-obsidian:Advanced Tables Toolbar": false
+    }
+  },
+  "active": "f073404c1168b161",
+  "lastOpenFiles": [
+    "前端开发知识库/CSS/知识点/001-CSS盒模型.md",
+    "前端开发知识库/其他/如何在 M1或M2 芯片的 Mac 电脑上安装 Node 14？.md",
+    "前端开发知识库/框架与库/MobX/介绍.md",
+    "前端开发知识库/附件专用/action-state-view.png",
+    "action-state-view.png",
+    "前端开发知识库/附件专用",
+    "Pasted image 20240429110222.png",
+    "前端开发知识库/框架与库/MobX/介绍",
+    "前端开发知识库/框架与库/MobX/核心",
+    "前端开发知识库/框架与库/MobX",
+    "shuyun/数云服务.md",
+    "其他/对公司有哪些具体的期望和建议.md",
+    "其他/IT主管的岗位职责.md",
+    "其他/创业规划.md",
+    "前端开发知识库/框架与库/React/基础/JSX语法.md",
+    "其他",
+    "shuyun/报价.md",
+    "shuyun/demo.md",
+    "前端开发知识库/HTML/基础.md",
+    "前端开发知识库/框架与库/React/基础",
+    "前端开发知识库/HTML/Meta标签.md",
+    "前端开发知识库/HTML/表单.md",
+    "前端开发知识库/框架与库/React",
+    "前端开发知识库/其他",
+    "前端开发知识库/最佳实践",
+    "前端开发知识库/工具与环境",
+    "shuyun/查看服务debug.json.md",
+    "2024-04-26.md",
+    "未命名.canvas"
+  ]
+}
