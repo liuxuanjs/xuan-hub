@@ -1,4 +1,9 @@
 {
-  "attachmentFolderPath": "前端开发知识库/附件专用",
-  "newFileLocation": "current"
+  "attachmentFolderPath": "附件专用",
+  "newFileLocation": "current",
+  "userIgnoreFilters": [
+    ".git",
+    ".gitignore",
+    "node_modules"
+  ]
 }

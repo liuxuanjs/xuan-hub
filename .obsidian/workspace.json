@@ -4,21 +4,21 @@
     "type": "split",
     "children": [
       {
-        "id": "cbf3205c0975e2c8",
+        "id": "35bdb3053589fa53",
         "type": "tabs",
         "children": [
           {
-            "id": "f073404c1168b161",
+            "id": "e2b33eb977b35a7d",
             "type": "leaf",
             "state": {
               "type": "markdown",
               "state": {
-                "file": "前端开发知识库/CSS/知识点/002-CSS-选择符.md",
+                "file": "前端开发知识库/其他/如何在 M1或M2 芯片的 Mac 电脑上安装 Node 14？.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "002-CSS-选择符"
+              "title": "如何在 M1或M2 芯片的 Mac 电脑上安装 Node 14？"
             }
           }
         ]
@@ -190,12 +190,19 @@
       "table-editor-obsidian:Advanced Tables Toolbar": false
     }
   },
-  "active": "f073404c1168b161",
+  "active": "e2b33eb977b35a7d",
   "lastOpenFiles": [
+    "前端开发知识库/框架与库/MobX/核心/Observable state.md",
+    "前端开发知识库/框架与库/MobX/介绍.md",
+    "前端开发知识库/附件专用/Pasted image 20250807144447.png",
+    "前端开发知识库/附件专用/Pasted image 20240429135115.png",
+    "前端开发知识库/附件专用/Pasted image 20240429134918.png",
+    "前端开发知识库/附件专用/observed-refs.png",
+    "前端开发知识库/附件专用/action-state-view.png",
+    "前端开发知识库/CSS/知识点/002-CSS-选择符.md",
+    "附件专用",
     "前端开发知识库/CSS/知识点/001-CSS盒模型.md",
     "前端开发知识库/其他/如何在 M1或M2 芯片的 Mac 电脑上安装 Node 14？.md",
-    "前端开发知识库/框架与库/MobX/介绍.md",
-    "前端开发知识库/附件专用/action-state-view.png",
     "action-state-view.png",
     "前端开发知识库/附件专用",
     "Pasted image 20240429110222.png",
@@ -217,7 +224,6 @@
     "前端开发知识库/框架与库/React",
     "前端开发知识库/其他",
     "前端开发知识库/最佳实践",
-    "前端开发知识库/工具与环境",
     "shuyun/查看服务debug.json.md",
     "2024-04-26.md",
     "未命名.canvas"
