@@ -4,21 +4,31 @@
     "type": "split",
     "children": [
       {
-        "id": "35bdb3053589fa53",
+        "id": "9fa9a0d5a9008216",
         "type": "tabs",
         "children": [
           {
-            "id": "e2b33eb977b35a7d",
+            "id": "0668c9c8ca97feee",
             "type": "leaf",
             "state": {
               "type": "markdown",
               "state": {
-                "file": "前端开发知识库/其他/如何在 M1或M2 芯片的 Mac 电脑上安装 Node 14？.md",
+                "file": "前端开发知识库/packages/MobX/介绍.md",
                 "mode": "source",
-                "source": false
+                "source": false,
+                "backlinks": true,
+                "backlinkOpts": {
+                  "collapseAll": false,
+                  "extraContext": false,
+                  "sortOrder": "alphabetical",
+                  "showSearch": false,
+                  "searchQuery": "",
+                  "backlinkCollapsed": false,
+                  "unlinkedCollapsed": true
+                }
               },
               "icon": "lucide-file",
-              "title": "如何在 M1或M2 芯片的 Mac 电脑上安装 Node 14？"
+              "title": "介绍"
             }
           }
         ]
@@ -89,6 +99,21 @@
         "type": "tabs",
         "children": [
           {
+            "id": "39574fa30c21fde7",
+            "type": "leaf",
+            "state": {
+              "type": "outline",
+              "state": {
+                "file": "前端开发知识库/packages/MobX/介绍.md",
+                "followCursor": false,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-list",
+              "title": "介绍 的大纲"
+            }
+          },
+          {
             "id": "8c4ddf7d44619249",
             "type": "leaf",
             "state": {
@@ -108,20 +133,6 @@
             }
           },
           {
-            "id": "06a41f79cf75f6f1",
-            "type": "leaf",
-            "state": {
-              "type": "outgoing-link",
-              "state": {
-                "file": "前端开发知识库/CSS/知识点/002-CSS-选择符.md",
-                "linksCollapsed": false,
-                "unlinkedCollapsed": true
-              },
-              "icon": "links-going-out",
-              "title": "002-CSS-选择符 的出链列表"
-            }
-          },
-          {
             "id": "2695f299882313fb",
             "type": "leaf",
             "state": {
@@ -134,21 +145,6 @@
               },
               "icon": "lucide-tags",
               "title": "标签"
-            }
-          },
-          {
-            "id": "39574fa30c21fde7",
-            "type": "leaf",
-            "state": {
-              "type": "outline",
-              "state": {
-                "file": "前端开发知识库/CSS/知识点/002-CSS-选择符.md",
-                "followCursor": false,
-                "showSearch": false,
-                "searchQuery": ""
-              },
-              "icon": "lucide-list",
-              "title": "002-CSS-选择符 的大纲"
             }
           },
           {
@@ -171,8 +167,7 @@
               "title": "Advanced Tables"
             }
           }
-        ],
-        "currentTab": 5
+        ]
       }
     ],
     "direction": "horizontal",
@@ -187,45 +182,58 @@
       "templates:插入模板": false,
       "command-palette:打开命令面板": false,
       "obsidian-advanced-slides:Show Slide Preview": false,
-      "table-editor-obsidian:Advanced Tables Toolbar": false
+      "table-editor-obsidian:Advanced Tables Toolbar": false,
+      "markdown-importer:打开 Markdown 格式转换器": false,
+      "obsidian-excalidraw-plugin:新建绘图文件": false
     }
   },
-  "active": "e2b33eb977b35a7d",
+  "active": "0668c9c8ca97feee",
   "lastOpenFiles": [
-    "前端开发知识库/框架与库/MobX/核心/Observable state.md",
-    "前端开发知识库/框架与库/MobX/介绍.md",
-    "前端开发知识库/附件专用/Pasted image 20250807144447.png",
-    "前端开发知识库/附件专用/Pasted image 20240429135115.png",
-    "前端开发知识库/附件专用/Pasted image 20240429134918.png",
-    "前端开发知识库/附件专用/observed-refs.png",
-    "前端开发知识库/附件专用/action-state-view.png",
-    "前端开发知识库/CSS/知识点/002-CSS-选择符.md",
-    "附件专用",
-    "前端开发知识库/CSS/知识点/001-CSS盒模型.md",
-    "前端开发知识库/其他/如何在 M1或M2 芯片的 Mac 电脑上安装 Node 14？.md",
-    "action-state-view.png",
-    "前端开发知识库/附件专用",
-    "Pasted image 20240429110222.png",
-    "前端开发知识库/框架与库/MobX/介绍",
-    "前端开发知识库/框架与库/MobX/核心",
-    "前端开发知识库/框架与库/MobX",
-    "shuyun/数云服务.md",
-    "其他/对公司有哪些具体的期望和建议.md",
-    "其他/IT主管的岗位职责.md",
-    "其他/创业规划.md",
-    "前端开发知识库/框架与库/React/基础/JSX语法.md",
-    "其他",
-    "shuyun/报价.md",
-    "shuyun/demo.md",
+    "assets/attachments/action-state-view.png",
+    "前端开发知识库/packages/MobX/介绍.md",
+    "前端开发知识库/backend/nginx/nginx FAQ.md",
+    "assets",
+    "obsidian-notes/cursor_docker_compose_shopify_yml_ngin.md",
+    "前端开发知识库/backend/nginx/ai-logs/cursor_docker_compose_shopify_yml_ngin.md",
+    "前端开发知识库/backend/nginx/ai-logs",
+    "assets/template/template.md",
+    "assets/template",
+    "前端开发知识库/backend/nginx/nginx使用指南.md",
+    "前端开发知识库/packages/Single-spa/微前端.md",
+    "obsidian-notes",
+    "前端开发知识库/JavaScript/docs/代码分割与按需加载.md",
+    "前端开发知识库/backend/nginx",
+    "前端开发知识库/backend",
+    "backend",
+    "前端开发知识库/JavaScript/docs/前端模块化.md",
+    "前端开发知识库/packages/Single-spa/docs/02-你们的微前端架构是如何设计的.md",
+    "前端开发知识库/JavaScript/docs",
     "前端开发知识库/HTML/基础.md",
-    "前端开发知识库/框架与库/React/基础",
-    "前端开发知识库/HTML/Meta标签.md",
     "前端开发知识库/HTML/表单.md",
-    "前端开发知识库/框架与库/React",
-    "前端开发知识库/其他",
-    "前端开发知识库/最佳实践",
-    "shuyun/查看服务debug.json.md",
-    "2024-04-26.md",
+    "前端开发知识库/packages/Node/如何在 M1或M2 芯片的 Mac 电脑上安装 Node 14？.md",
+    "前端开发知识库/packages/Webpack/Webpack5.md",
+    "前端开发知识库/CSS/CSS.md",
+    "前端开发知识库/CSS/docs/001-CSS盒模型.md",
+    "前端开发知识库/packages/Single-spa/docs/01-为什么选择微前端架构？解决了什么问题？.md",
+    "前端开发知识库/solutions/静默登录方案.md",
+    "前端开发知识库/packages/Node",
+    "assets/attachments/Pasted image 20250807144447.png",
+    "前端开发知识库/attachments/action-state-view.png",
+    "assets/attachments/Pasted image 20240429134918.png",
+    "assets/attachments/observed-refs.png",
+    "assets/attachments/Pasted image 20240429135115.png",
+    "前端开发知识库/tools",
+    "前端开发知识库/attachments/Pasted image 20250807144447.png",
+    "数云/数云服务.md",
+    "数云/查看服务debug.json.md",
+    "数云/查询项目问题的必要条件.md",
+    "数云/绩效自评.md",
+    "前端开发知识库/questions/01-why-microfrontend.md",
+    "前端开发知识库/Excalidraw/Drawing 2025-08-06 18.20.56.excalidraw.md",
+    "前端开发知识库/packages/Single-spa/docs/03-主从应用之间是如何通信的.md",
+    "前端开发知识库/attachments/Pasted image 20240429135115.png",
+    "前端开发知识库/attachments/Pasted image 20240429134918.png",
+    "前端开发知识库/attachments/observed-refs.png",
     "未命名.canvas"
   ]
 }

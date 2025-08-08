@@ -1,9 +1,10 @@
 {
-  "attachmentFolderPath": "附件专用",
+  "attachmentFolderPath": "assets/attachments",
   "newFileLocation": "current",
   "userIgnoreFilters": [
     ".git",
     ".gitignore",
     "node_modules"
-  ]
+  ],
+  "alwaysUpdateLinks": true
 }
