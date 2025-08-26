@@ -4,31 +4,17 @@
     "type": "split",
     "children": [
       {
-        "id": "9fa9a0d5a9008216",
+        "id": "b796177c5cea4a59",
         "type": "tabs",
         "children": [
           {
-            "id": "0668c9c8ca97feee",
+            "id": "226e34d1871ec2bd",
             "type": "leaf",
             "state": {
-              "type": "markdown",
-              "state": {
-                "file": "Knowledge/frontend/solutions/静默登录方案.md",
-                "mode": "source",
-                "source": false,
-                "backlinks": true,
-                "backlinkOpts": {
-                  "collapseAll": false,
-                  "extraContext": false,
-                  "sortOrder": "alphabetical",
-                  "showSearch": false,
-                  "searchQuery": "",
-                  "backlinkCollapsed": false,
-                  "unlinkedCollapsed": true
-                }
-              },
+              "type": "empty",
+              "state": {},
               "icon": "lucide-file",
-              "title": "静默登录方案"
+              "title": "新标签页"
             }
           }
         ]
@@ -63,7 +49,7 @@
             "state": {
               "type": "search",
               "state": {
-                "query": "",
+                "query": "版本不一致",
                 "matchingCase": false,
                 "explainSearch": false,
                 "collapseAll": false,
@@ -88,7 +74,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 300
+    "width": 363.5
   },
   "right": {
     "id": "9f87029531bd9cde",
@@ -104,13 +90,12 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "Knowledge/frontend/solutions/静默登录方案.md",
                 "followCursor": false,
                 "showSearch": false,
                 "searchQuery": ""
               },
               "icon": "lucide-list",
-              "title": "静默登录方案 的大纲"
+              "title": "大纲"
             }
           },
           {
@@ -189,6 +174,13 @@
   },
   "active": "c7c1f8dfa9b3d7d0",
   "lastOpenFiles": [
+    "Knowledge/frontend/Browser/前端缓存.md",
+    "Knowledge/frontend/Browser",
+    "Knowledge/frontend/packages/Single-spa/docs/04-微前端应用是如何加载和管理.md",
+    "Knowledge/frontend/packages/Single-spa/docs/05-项目中遇到了哪些技术挑战和坑点.md",
+    "Knowledge/frontend/packages/Single-spa/微前端.md",
+    "Knowledge/frontend/packages/Webpack/Webpack5.md",
+    "Knowledge/frontend/solutions/静默登录方案.md",
     "Tools/cursor/rules/typescript-standards.md",
     "Tools/cursor/rules/testing-guidelines.md",
     "Tools/cursor/rules/react-patterns.md",
@@ -213,23 +205,16 @@
     "tools",
     "Knowledge/frontend/tools/cursor/rules",
     "Knowledge/frontend/tools/cursor",
-    "Knowledge/frontend/solutions/静默登录方案.md",
     "Work/shuyun/数云服务.md",
     "Work/shuyun/查看服务debug.json.md",
     "Work/shuyun/查询项目问题的必要条件.md",
     "Work/shuyun/绩效自评.md",
-    "Knowledge/frontend/solutions/组件库.md",
-    "Knowledge/frontend/solutions/cursor的rules.md",
-    "Knowledge/frontend/JavaScript/docs/前端模块化.md",
-    "Work/projects/index.md",
-    "Resources/other/对公司有哪些具体的期望和建议.md",
     "Resources/other",
     "Resources/assets/attachments/observed-refs.png",
     "Resources/assets/attachments/action-state-view.png",
     "Resources/assets/attachments/Pasted image 20250807144447.png",
     "Resources/assets/attachments/Pasted image 20240429135115.png",
     "Resources/assets/attachments/Pasted image 20240429134918.png",
-    "Resources/assets/template",
     "assets/attachments/action-state-view.png",
     "assets/attachments/Pasted image 20250807144447.png",
     "前端开发知识库/attachments/action-state-view.png",
