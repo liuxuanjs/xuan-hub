@@ -1,30 +1,728 @@
+/* 全局样式重置和基础设置 */
 * {
   box-sizing: border-box;
-  margin: 0;
-  padding: 0;
 }
 
 body {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  line-height: 1.6;
-  color: #333;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  min-height: 100vh;
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: #f8fafc;
 }
 
-.App {
-  min-height: 100vh;
+/* 通用样式 */
+.empty-state {
+  text-align: center;
+  padding: 40px;
+  color: #6b7280;
+  background: #f9fafb;
+  border-radius: 8px;
+  border: 2px dashed #d1d5db;
 }
 
-.container {
-  max-width: 1200px;
-  margin: 0 auto;
+.empty-state p {
+  margin: 8px 0;
+}
+
+/* 演示区域通用样式 */
+.demo-info {
+  margin-top: 24px;
   padding: 20px;
+  background: #eff6ff;
+  border-radius: 8px;
+  border-left: 4px solid #3b82f6;
+}
+
+.demo-info h4 {
+  margin: 0 0 12px 0;
+  color: #1e40af;
+  font-size: 16px;
+}
+
+.demo-info ol, .demo-info ul {
+  margin: 0;
+  padding-left: 20px;
+}
+
+.demo-info li {
+  margin-bottom: 8px;
+  line-height: 1.5;
+  color: #1f2937;
+}
+
+.demo-info strong {
+  color: #1e40af;
+  font-weight: 600;
+}
+
+.demo-info code {
+  background: #dbeafe;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-family: 'Monaco', 'Consolas', monospace;
+  font-size: 13px;
+  color: #1e40af;
+}
+
+/* 全局变量泄漏页面样式 */
+.global-leak-demo {
+  padding: 20px;
+}
+
+.global-leak-demo h3 {
+  margin: 0 0 16px 0;
+  color: #1f2937;
+}
+
+.global-vars-list {
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  border-radius: 8px;
+  padding: 16px;
+  margin-bottom: 20px;
+}
+
+.global-vars-list p {
+  margin: 0 0 12px 0;
+  font-weight: 500;
+  color: #991b1b;
+}
+
+.global-var-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 12px;
+  background: white;
+  border-radius: 6px;
+  margin-bottom: 8px;
+  font-family: monospace;
+}
+
+.var-name {
+  font-weight: 600;
+  color: #dc2626;
+}
+
+.var-size {
+  color: #6b7280;
+  font-size: 14px;
+}
+
+.inspection-tip {
+  margin-top: 16px;
+  padding: 12px;
+  background: #f3f4f6;
+  border-radius: 6px;
+  font-size: 14px;
+  color: #374151;
+}
+
+.inspection-tip code {
+  display: block;
+  margin-top: 8px;
+  padding: 8px;
+  background: #1f2937;
+  color: #10b981;
+  border-radius: 4px;
+  font-size: 12px;
+  overflow-x: auto;
+}
+
+/* 事件监听器泄漏页面样式 */
+.event-leak-demo {
+  padding: 20px;
+}
+
+.event-demo-active {
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  border-radius: 8px;
+  padding: 16px;
+  margin-bottom: 20px;
+}
+
+.event-demo-active p {
+  margin: 0 0 12px 0;
+  font-weight: 500;
+  color: #991b1b;
+}
+
+.event-buttons {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin: 16px 0;
+}
+
+.demo-button {
+  padding: 8px 16px;
+  background: #3b82f6;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  font-size: 14px;
+}
+
+.demo-button:hover {
+  background: #2563eb;
+}
+
+.leak-info {
+  background: white;
+  padding: 16px;
+  border-radius: 8px;
+  margin-top: 16px;
+}
+
+.leak-info h4 {
+  margin: 0 0 12px 0;
+  color: #1f2937;
+}
+
+.leak-info ul {
+  margin: 0;
+  padding-left: 20px;
+}
+
+.leak-info li {
+  margin-bottom: 6px;
+  color: #374151;
+  line-height: 1.4;
+}
+
+/* 定时器泄漏页面样式 */
+.timer-leak-demo {
+  padding: 20px;
+}
+
+.timer-demo-active {
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  border-radius: 8px;
+  padding: 16px;
+  margin-bottom: 20px;
+}
+
+.timer-stats {
+  display: flex;
+  gap: 24px;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+}
+
+.timer-stats p {
+  margin: 0;
+  font-weight: 500;
+  color: #991b1b;
+}
+
+.timer-list h4,
+.timer-logs h4 {
+  margin: 16px 0 8px 0;
+  color: #1f2937;
+  font-size: 16px;
+}
+
+.timer-item {
+  display: flex;
+  gap: 12px;
+  padding: 8px 12px;
+  background: white;
+  border-radius: 6px;
+  margin-bottom: 6px;
+  font-size: 14px;
+}
+
+.timer-id {
+  font-weight: 600;
+  color: #1f2937;
+  min-width: 80px;
+}
+
+.timer-type {
+  color: #6b7280;
+  min-width: 120px;
+}
+
+.timer-interval {
+  color: #059669;
+  min-width: 60px;
+  font-family: monospace;
+}
+
+.timer-size {
+  color: #dc2626;
+  font-family: monospace;
+}
+
+.timer-logs {
+  margin-top: 20px;
+}
+
+.log-container {
+  max-height: 200px;
+  overflow-y: auto;
+  background: #000;
+  border-radius: 6px;
+  padding: 8px;
+}
+
+.log-entry {
+  display: flex;
+  gap: 12px;
+  padding: 4px 0;
+  font-family: monospace;
+  font-size: 12px;
+  color: #10b981;
+  line-height: 1.4;
+}
+
+.log-time {
+  color: #6b7280;
+  min-width: 80px;
+}
+
+.log-message {
+  flex: 1;
+}
+
+/* 闭包泄漏页面样式 */
+.closure-leak-demo {
+  padding: 20px;
+}
+
+.closure-demo-active {
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  border-radius: 8px;
+  padding: 16px;
+  margin-bottom: 20px;
+}
+
+.closure-stats {
+  display: flex;
+  gap: 24px;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+}
+
+.closure-stats p {
+  margin: 0;
+  font-weight: 500;
+  color: #991b1b;
+}
+
+.closure-list h4 {
+  margin: 16px 0 12px 0;
+  color: #1f2937;
+}
+
+.closure-item {
+  background: white;
+  border-radius: 8px;
+  padding: 16px;
+  margin-bottom: 12px;
+  border: 1px solid #e5e7eb;
+}
+
+.closure-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.closure-name {
+  font-weight: 600;
+  color: #1f2937;
+}
+
+.closure-size {
+  color: #dc2626;
+  font-family: monospace;
+  font-size: 14px;
+}
+
+.closure-actions {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 12px;
+  flex-wrap: wrap;
+}
+
+.test-btn {
+  padding: 6px 12px;
+  background: #6366f1;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 13px;
+  transition: background-color 0.2s;
+}
+
+.test-btn:hover {
+  background: #4f46e5;
+}
+
+.closure-details {
+  display: flex;
+  gap: 16px;
+}
+
+.closure-details small {
+  color: #6b7280;
+  font-size: 12px;
+}
+
+.leak-analysis {
+  background: #eff6ff;
+  padding: 16px;
+  border-radius: 8px;
+  margin-top: 16px;
+}
+
+.leak-analysis h4 {
+  margin: 0 0 12px 0;
+  color: #1e40af;
+}
+
+.leak-analysis ul {
+  margin: 0;
+  padding-left: 20px;
+}
+
+.leak-analysis li {
+  margin-bottom: 6px;
+  color: #1f2937;
+  line-height: 1.4;
+}
+
+/* DOM泄漏页面样式 */
+.dom-leak-demo {
+  padding: 20px;
+}
+
+.dom-demo-active {
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  border-radius: 8px;
+  padding: 16px;
+  margin-bottom: 20px;
+}
+
+.dom-stats {
+  display: flex;
+  gap: 24px;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+}
+
+.dom-stats p {
+  margin: 0;
+  font-weight: 500;
+  color: #991b1b;
+}
+
+.detached-warning {
+  background: #fef3c7;
+  border: 1px solid #fbbf24;
+  border-radius: 8px;
+  padding: 16px;
+  margin: 16px 0;
+}
+
+.detached-warning h4 {
+  margin: 0 0 8px 0;
+  color: #92400e;
+}
+
+.detached-warning p {
+  margin: 0 0 12px 0;
+  color: #78350f;
+}
+
+.detached-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.detached-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 12px;
+  background: white;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.timeline {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin: 12px 0;
+}
+
+.timeline-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+  border-radius: 8px;
+  background: white;
+  border: 1px solid #e5e7eb;
+}
+
+.timeline-item.completed {
+  background: #f0f9ff;
+  border-color: #0ea5e9;
+}
+
+.timeline-item.pending {
+  background: #f9fafb;
+  border-color: #d1d5db;
+}
+
+.timeline-step {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 600;
+  color: white;
+  background: #6b7280;
+  flex-shrink: 0;
+}
+
+.timeline-item.completed .timeline-step {
+  background: #0ea5e9;
+}
+
+.timeline-text {
+  flex: 1;
+  color: #374151;
+  font-size: 14px;
+}
+
+/* 内存监控页面样式 */
+.memory-monitor-demo {
+  padding: 20px;
+}
+
+.monitor-controls {
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+  margin-bottom: 24px;
+}
+
+.control-buttons {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.current-memory {
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+  margin-bottom: 24px;
+}
+
+.current-memory h4 {
+  margin: 0 0 16px 0;
+  color: #1f2937;
+}
+
+.memory-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+}
+
+.stat-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px;
+  background: #f8fafc;
+  border-radius: 6px;
+}
+
+.stat-label {
+  color: #6b7280;
+  font-size: 14px;
+}
+
+.stat-value {
+  font-weight: 600;
+  font-family: monospace;
+}
+
+.stat-value.high {
+  color: #dc2626;
+}
+
+.stat-value.medium {
+  color: #d97706;
+}
+
+.stat-value.low {
+  color: #059669;
+}
+
+.memory-chart {
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+  margin-bottom: 24px;
+}
+
+.memory-chart h4 {
+  margin: 0 0 16px 0;
+  color: #1f2937;
+}
+
+.chart-container {
+  position: relative;
+  height: 200px;
+  background: #f8fafc;
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.chart-area {
+  position: relative;
+  height: 100%;
+  width: 100%;
+}
+
+.chart-point {
+  position: absolute;
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  transform: translate(-50%, 50%);
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.chart-point:hover {
+  transform: translate(-50%, 50%) scale(2);
+}
+
+.chart-labels {
+  position: absolute;
+  right: 8px;
+  top: 0;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-end;
+  padding: 8px 0;
+  font-size: 12px;
+  color: #6b7280;
+  pointer-events: none;
+}
+
+.alerts-section {
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+  margin-bottom: 24px;
+}
+
+.alerts-section h4 {
+  margin: 0 0 16px 0;
+  color: #1f2937;
+}
+
+.alerts-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.alert {
+  display: flex;
+  gap: 12px;
+  padding: 12px;
+  border-radius: 6px;
+  font-size: 14px;
+}
+
+.alert-info {
+  background: #eff6ff;
+  border: 1px solid #bfdbfe;
+  color: #1e40af;
+}
+
+.alert-success {
+  background: #f0fdf4;
+  border: 1px solid #bbf7d0;
+  color: #166534;
+}
+
+.alert-warning {
+  background: #fffbeb;
+  border: 1px solid #fed7aa;
+  color: #92400e;
+}
+
+.alert-error {
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  color: #991b1b;
+}
+
+.alert-time {
+  color: #6b7280;
+  font-family: monospace;
+  font-size: 12px;
+  min-width: 80px;
+}
+
+.alert-message {
+  flex: 1;
 }
 
 /* 响应式设计 */
 @media (max-width: 768px) {
-  .container {
-    padding: 15px;
+  .memory-stats {
+    grid-template-columns: 1fr;
+  }
+  
+  .timer-stats,
+  .closure-stats,
+  .dom-stats {
+    flex-direction: column;
+    gap: 8px;
+  }
+  
+  .control-buttons {
+    flex-direction: column;
+  }
+  
+  .event-buttons {
+    flex-direction: column;
+  }
+  
+  .closure-actions {
+    flex-direction: column;
   }
 }

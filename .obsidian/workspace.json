@@ -11,10 +11,24 @@
             "id": "226e34d1871ec2bd",
             "type": "leaf",
             "state": {
-              "type": "empty",
-              "state": {},
+              "type": "markdown",
+              "state": {
+                "file": "Knowledge/frontend/Browser/前端缓存.md",
+                "mode": "source",
+                "source": false,
+                "backlinks": true,
+                "backlinkOpts": {
+                  "collapseAll": false,
+                  "extraContext": false,
+                  "sortOrder": "alphabetical",
+                  "showSearch": false,
+                  "searchQuery": "",
+                  "backlinkCollapsed": false,
+                  "unlinkedCollapsed": true
+                }
+              },
               "icon": "lucide-file",
-              "title": "新标签页"
+              "title": "前端缓存"
             }
           }
         ]
@@ -90,12 +104,13 @@
             "state": {
               "type": "outline",
               "state": {
+                "file": "Knowledge/frontend/Browser/前端缓存.md",
                 "followCursor": false,
                 "showSearch": false,
                 "searchQuery": ""
               },
               "icon": "lucide-list",
-              "title": "大纲"
+              "title": "前端缓存 的大纲"
             }
           },
           {
@@ -160,6 +175,7 @@
   },
   "left-ribbon": {
     "hiddenItems": {
+      "bases:创建新数据库": false,
       "switcher:打开快速切换": false,
       "graph:查看关系图谱": false,
       "canvas:新建白板": false,
@@ -172,7 +188,7 @@
       "obsidian-excalidraw-plugin:新建绘图文件": false
     }
   },
-  "active": "c7c1f8dfa9b3d7d0",
+  "active": "226e34d1871ec2bd",
   "lastOpenFiles": [
     "Knowledge/frontend/Browser/前端缓存.md",
     "Knowledge/frontend/Browser",
