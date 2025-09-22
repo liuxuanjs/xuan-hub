@@ -4,6 +4,7 @@ description: "个人知识库（非博客）写作与生成规则"
 globs:
   - "Knowledge/**/*.md"
 priority: 1200
+alwaysApply: true
 ---
 
 # 个人知识库写作与生成规则（非博客风格）
@@ -369,3 +370,4 @@ docker stop web && docker rm web
 - [[Docker 镜像管理]]
 - [[Docker Compose 编排]]
 ```
+

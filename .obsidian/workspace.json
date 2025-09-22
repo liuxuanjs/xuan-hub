@@ -13,7 +13,7 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Knowledge/frontend/Browser/前端缓存.md",
+                "file": "Knowledge/frontend/Browser/JavaScript事件循环深度解析：Event Loop全攻略.md",
                 "mode": "source",
                 "source": false,
                 "backlinks": true,
@@ -28,7 +28,7 @@
                 }
               },
               "icon": "lucide-file",
-              "title": "前端缓存"
+              "title": "JavaScript事件循环深度解析：Event Loop全攻略"
             }
           }
         ]
@@ -104,13 +104,13 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "Knowledge/frontend/Browser/前端缓存.md",
+                "file": "Knowledge/frontend/Browser/JavaScript事件循环深度解析：Event Loop全攻略.md",
                 "followCursor": false,
                 "showSearch": false,
                 "searchQuery": ""
               },
               "icon": "lucide-list",
-              "title": "前端缓存 的大纲"
+              "title": "JavaScript事件循环深度解析：Event Loop全攻略 的大纲"
             }
           },
           {
@@ -190,6 +190,9 @@
   },
   "active": "226e34d1871ec2bd",
   "lastOpenFiles": [
+    "Knowledge/frontend/Browser/Chrome DevTools Performance.md",
+    "Knowledge/frontend/Browser/JavaScript事件循环深度解析：Event Loop全攻略.md",
+    "Knowledge/frontend/Browser/浏览器输入URL后的完整流程解析.md",
     "Knowledge/frontend/Browser/前端缓存.md",
     "Knowledge/frontend/Browser",
     "Knowledge/frontend/packages/Single-spa/docs/04-微前端应用是如何加载和管理.md",
@@ -222,9 +225,6 @@
     "Knowledge/frontend/tools/cursor/rules",
     "Knowledge/frontend/tools/cursor",
     "Work/shuyun/数云服务.md",
-    "Work/shuyun/查看服务debug.json.md",
-    "Work/shuyun/查询项目问题的必要条件.md",
-    "Work/shuyun/绩效自评.md",
     "Resources/other",
     "Resources/assets/attachments/observed-refs.png",
     "Resources/assets/attachments/action-state-view.png",
