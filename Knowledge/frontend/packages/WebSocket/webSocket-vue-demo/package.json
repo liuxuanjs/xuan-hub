@@ -1,0 +1,70 @@
+{
+  "name": "websocket-chat-vue",
+  "version": "1.0.0",
+  "description": "基于 Vue 3 和 WebSocket 的实时聊天应用",
+  "scripts": {
+    "dev": "vite",
+    "build": "vue-tsc && vite build",
+    "preview": "vite preview",
+    "dev:open": "vite --open",
+    "build:dev": "vite build --mode development",
+    "clean": "rimraf dist",
+    "lint": "eslint src",
+    "lint:fix": "eslint src --fix",
+    "type-check": "vue-tsc --noEmit",
+    "server": "node server-example.js",
+    "server:dev": "nodemon server-example.js",
+    "dev:full": "concurrently \"npm run server\" \"npm run dev\""
+  },
+  "keywords": [
+    "websocket",
+    "vue",
+    "vue3",
+    "pinia",
+    "chat",
+    "realtime",
+    "vite",
+    "typescript"
+  ],
+  "author": "Your Name",
+  "license": "MIT",
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=8.0.0"
+  },
+  "dependencies": {
+    "vue": "^3.4.0",
+    "pinia": "^2.1.7",
+    "vue-styled-components": "^1.6.0",
+    "uuid": "^9.0.1"
+  },
+  "devDependencies": {
+    "@types/node": "^20.10.0",
+    "@types/uuid": "^9.0.7",
+    "@typescript-eslint/eslint-plugin": "^6.14.0",
+    "@typescript-eslint/parser": "^6.14.0",
+    "@vitejs/plugin-vue": "^4.5.0",
+    "@vue/eslint-config-typescript": "^12.0.0",
+    "concurrently": "^8.2.2",
+    "eslint": "^8.55.0",
+    "eslint-plugin-vue": "^9.19.0",
+    "nodemon": "^3.1.10",
+    "rimraf": "^5.0.5",
+    "typescript": "^5.3.3",
+    "vite": "^5.0.0",
+    "vue-tsc": "^1.8.25",
+    "ws": "^8.18.3"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  }
+}
