@@ -2,7 +2,7 @@
 aliases: ["React合成事件", "SyntheticEvent", "事件委托", "React事件系统"]
 title: "React 合成事件"
 tags: ["React", "事件处理", "性能优化", "浏览器兼容"]
-updated: 2025-09-19
+updated: 2025-01-09
 ---
 
 ## 概览

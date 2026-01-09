@@ -2,7 +2,7 @@
 aliases: ["React 18", "并发渲染", "Concurrent Features", "自动批处理"]
 title: "React 18 新特性"
 tags: ["React", "并发", "性能优化", "新特性"]
-updated: 2025-09-19
+updated: 2025-01-09
 ---
 
 ## 概览

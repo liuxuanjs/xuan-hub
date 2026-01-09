@@ -2,7 +2,7 @@
 aliases: ["React Fiber", "Fiber架构", "React并发", "可中断渲染"]
 title: "React Fiber架构深度解析"
 tags: ["React", "Fiber", "性能优化", "架构", "并发渲染"]
-updated: 2025-09-19
+updated: 2025-01-09
 ---
 
 ## 概览

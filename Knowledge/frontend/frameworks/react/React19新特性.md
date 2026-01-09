@@ -2,7 +2,7 @@
 aliases: ["React 19", "React Compiler", "use Hook", "Server Components"]
 title: "React 19 新特性"
 tags: ["React", "编译器", "性能优化", "新特性"]
-updated: 2025-09-19
+updated: 2025-01-09
 ---
 
 ## 概览
