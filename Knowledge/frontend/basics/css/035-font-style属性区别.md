@@ -1,3 +1,10 @@
+---
+aliases: ["font-style属性区别"]
+title: "font-style属性区别"
+tags: ["CSS", "前端基础"]
+updated: 2026-01-09
+---
+
 ## 概述
 
 `font-style`属性用于设置文字的样式，其中`italic`和`oblique`都能产生斜体效果，但实现原理和视觉效果存在重要区别。
@@ -249,6 +256,3 @@ function hasItalicSupport(fontFamily) {
 - **文件大小：** 真正的italic字体会增加资源大小
 
 选择建议：优先使用`italic`获得更好的视觉效果，在字体不支持或性能敏感场景下使用`oblique`。
-
-## 标签
-#CSS #前端面试

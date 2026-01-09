@@ -1,3 +1,10 @@
+---
+aliases: ["absolute与overflow关系"]
+title: "absolute与overflow关系"
+tags: ["CSS", "前端基础"]
+updated: 2026-01-09
+---
+
 ## 概述
 绝对定位元素与父元素的overflow属性有着特殊的关系，理解这种关系对于控制绝对定位元素的显示范围很重要。
 

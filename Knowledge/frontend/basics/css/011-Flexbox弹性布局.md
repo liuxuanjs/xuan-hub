@@ -1,3 +1,10 @@
+---
+aliases: ["Flexbox", "弹性布局", "flex布局"]
+title: "Flexbox 弹性布局"
+tags: ["CSS", "布局", "Flexbox", "CSS3", "前端面试"]
+updated: 2026-01-09
+---
+
 ## 概述
 
 CSS Flexbox（弹性盒布局模型）是 CSS3 引入的一种强大的布局方式，为盒状模型提供最大的灵活性。它特别适合处理一维布局场景，能够轻松实现元素的对齐、分布和排序。Flexbox 解决了传统布局中许多复杂的问题，是现代 Web 布局的首选方案之一。
@@ -489,6 +496,7 @@ CSS Flexbox（弹性盒布局模型）是 CSS3 引入的一种强大的布局方
 - 混淆主轴和交叉轴的概念
 - 过度依赖 `flex: 1` 而忽略内容尺寸
 
-## 标签
+## 参考资料
 
-#CSS #前端面试
+- [MDN - Flexbox](https://developer.mozilla.org/zh-CN/docs/Learn/CSS/CSS_layout/Flexbox)
+- [CSS Tricks - A Complete Guide to Flexbox](https://css-tricks.com/snippets/css/a-guide-to-flexbox/)

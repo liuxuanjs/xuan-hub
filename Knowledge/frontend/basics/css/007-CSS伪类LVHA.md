@@ -1,3 +1,10 @@
+---
+aliases: ["LVHA", "链接伪类顺序", "love hate"]
+title: "CSS 伪类 LVHA"
+tags: ["CSS", "伪类", "链接", "前端面试"]
+updated: 2026-01-10
+---
+
 ## 概述
 
 CSS 伪类 LVHA 是指链接（`<a>` 标签）的四种状态伪类的书写顺序：`:link`、`:visited`、`:hover`、`:active`。这个顺序对于正确显示链接的不同状态至关重要，因为 CSS 的层叠规则会影响样式的最终表现。理解 LVHA 顺序有助于避免链接状态样式冲突。
@@ -230,6 +237,7 @@ a:active {
 
 **使用场景：** 导航菜单、按钮样式等特殊场景
 
-## 标签
+## 参考资料
 
-#CSS #前端面试
+- [MDN - :link](https://developer.mozilla.org/zh-CN/docs/Web/CSS/:link)
+- [CSS Tricks - Link Pseudo Classes](https://css-tricks.com/snippets/css/link-pseudo-classes/)

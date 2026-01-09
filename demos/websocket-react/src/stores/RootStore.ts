@@ -12,11 +12,14 @@ export class RootStore {
   webSocketStore: WebSocketStore;
   chatStore: ChatStore;
 
+  // 存储事件监听器引用，便于清理
+  private eventHandlers: Map<string, Function> = new Map();
+
   constructor() {
     this.appStore = new AppStore();
     this.webSocketStore = new WebSocketStore();
     this.chatStore = new ChatStore();
-    
+
     // 设置 Store 之间的关联
     this.setupStoreConnections();
   }
@@ -26,15 +29,17 @@ export class RootStore {
    */
   private setupStoreConnections(): void {
     // 监听 WebSocket 消息，传递给 ChatStore
-    this.webSocketStore.addEventListener('message', (event: any) => {
+    const messageHandler = (event: any) => {
       this.chatStore.handleWebSocketMessage(event.data);
-    });
+    };
+    this.webSocketStore.addEventListener('message', messageHandler);
+    this.eventHandlers.set('message', messageHandler);
 
     // 监听连接成功事件
-    this.webSocketStore.addEventListener('connected', () => {
+    const connectedHandler = () => {
       if (this.appStore.currentUser) {
         this.chatStore.setCurrentUser(this.appStore.currentUser);
-        
+
         // 发送用户加入消息
         this.webSocketStore.sendMessage({
           type: 'join',
@@ -42,39 +47,51 @@ export class RootStore {
           timestamp: Date.now(),
         });
       }
-    });
+    };
+    this.webSocketStore.addEventListener('connected', connectedHandler);
+    this.eventHandlers.set('connected', connectedHandler);
 
     // 监听连接断开事件
-    this.webSocketStore.addEventListener('disconnected', (event: any) => {
+    const disconnectedHandler = (event: any) => {
       if (event.code !== 1000) {
         this.chatStore.showNotification('连接已断开，正在尝试重连...', 'warning');
       }
-    });
+    };
+    this.webSocketStore.addEventListener('disconnected', disconnectedHandler);
+    this.eventHandlers.set('disconnected', disconnectedHandler);
 
     // 监听重连事件
-    this.webSocketStore.addEventListener('reconnecting', (event: any) => {
+    const reconnectingHandler = (event: any) => {
       const { attempt, maxAttempts } = event;
       this.chatStore.showNotification(
-        `正在重连 (${attempt}/${maxAttempts})...`, 
+        `正在重连 (${attempt}/${maxAttempts})...`,
         'info'
       );
-    });
+    };
+    this.webSocketStore.addEventListener('reconnecting', reconnectingHandler);
+    this.eventHandlers.set('reconnecting', reconnectingHandler);
 
     // 监听重连失败事件
-    this.webSocketStore.addEventListener('reconnectFailed', () => {
+    const reconnectFailedHandler = () => {
       this.chatStore.showNotification('重连失败，请手动重新连接', 'error');
-    });
+    };
+    this.webSocketStore.addEventListener('reconnectFailed', reconnectFailedHandler);
+    this.eventHandlers.set('reconnectFailed', reconnectFailedHandler);
 
     // 监听连接错误事件
-    this.webSocketStore.addEventListener('error', () => {
+    const errorHandler = () => {
       this.chatStore.showNotification('连接出现错误', 'error');
-    });
+    };
+    this.webSocketStore.addEventListener('error', errorHandler);
+    this.eventHandlers.set('error', errorHandler);
 
     // 监听延迟更新事件
-    this.webSocketStore.addEventListener('latency', (event: any) => {
+    const latencyHandler = (event: any) => {
       // 可以在这里处理延迟信息，比如显示网络状态
       console.log('网络延迟:', event.latency, 'ms');
-    });
+    };
+    this.webSocketStore.addEventListener('latency', latencyHandler);
+    this.eventHandlers.set('latency', latencyHandler);
   }
 
   /**
@@ -198,6 +215,12 @@ export class RootStore {
    * 销毁所有 Store
    */
   destroy = (): void => {
+    // 清理事件监听器
+    this.eventHandlers.forEach((handler, event) => {
+      this.webSocketStore.removeEventListener(event, handler);
+    });
+    this.eventHandlers.clear();
+
     this.logout();
     this.webSocketStore.destroy();
     this.appStore.reset();

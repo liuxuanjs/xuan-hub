@@ -1,343 +1,406 @@
-import React, { useState } from 'react';
-import { observer } from 'mobx-react-lite';
-import styled from 'styled-components';
+import React, { useState, useCallback, useMemo } from 'react';
+import styled, { keyframes } from 'styled-components';
 import type { LoginFormProps } from '@/types';
+import { MessageSquare, Server, User, LogIn, Loader, AlertCircle, Info } from './common/Icons';
+
+// 验证常量
+const VALIDATION = {
+  USERNAME_MIN: 2,
+  USERNAME_MAX: 20,
+  USERNAME_INPUT_MAX: 25,
+} as const;
+
+const slideUp = keyframes`
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+`;
+
+const spin = keyframes`
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+`;
 
 const LoginContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 100%;
-  padding: 40px;
+  width: 100%;
+  min-height: 100vh;
+  background: #1E1F22;
+  padding: 24px;
 `;
 
-const LoginBox = styled.div`
+const LoginCard = styled.div`
   width: 100%;
-  max-width: 400px;
-  padding: 40px;
-  text-align: center;
-  animation: slideUp 0.6s ease-out;
+  max-width: 420px;
+  background: #2B2D31;
+  border-radius: 8px;
+  padding: 32px;
+  animation: ${slideUp} 0.3s ease;
+`;
 
-  @keyframes slideUp {
-    from {
-      opacity: 0;
-      transform: translateY(30px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
+const Logo = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 8px;
+
+  svg {
+    color: #5865F2;
   }
 `;
 
 const Title = styled.h1`
-  color: #667eea;
-  font-size: 28px;
-  font-weight: 700;
-  margin-bottom: 10px;
+  font-size: 24px;
+  font-weight: 600;
+  color: #F2F3F5;
+  text-align: center;
 `;
 
 const Subtitle = styled.p`
-  color: #666;
-  font-size: 16px;
-  margin-bottom: 40px;
+  color: #B5BAC1;
+  font-size: 14px;
+  text-align: center;
+  margin-bottom: 32px;
   line-height: 1.5;
 `;
 
+const Form = styled.form`
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+`;
+
 const FormGroup = styled.div`
-  margin-bottom: 24px;
-  text-align: left;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 `;
 
 const Label = styled.label`
-  display: block;
-  margin-bottom: 8px;
+  font-size: 12px;
   font-weight: 600;
-  color: #333;
-  font-size: 14px;
+  color: #B5BAC1;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
 `;
 
-const Input = styled.input<{ hasError?: boolean }>`
+const InputWrapper = styled.div`
+  position: relative;
+  display: flex;
+  align-items: center;
+`;
+
+const InputIcon = styled.span`
+  position: absolute;
+  left: 12px;
+  color: #949BA4;
+  display: flex;
+  pointer-events: none;
+`;
+
+const Input = styled.input<{ $hasError?: boolean }>`
   width: 100%;
-  padding: 14px 16px;
-  border: 2px solid ${props => props.hasError ? '#f44336' : '#e1e8ed'};
-  border-radius: 12px;
+  padding: 12px 12px 12px 40px;
+  background: #1E1F22;
+  border: 1px solid ${props => props.$hasError ? '#ED4245' : 'transparent'};
+  border-radius: 4px;
   font-size: 16px;
-  transition: all 0.3s ease;
-  background: #fafafa;
+  color: #F2F3F5;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+
+  &:hover {
+    border-color: ${props => props.$hasError ? '#ED4245' : '#3F4147'};
+  }
 
   &:focus {
-    outline: none;
-    border-color: ${props => props.hasError ? '#f44336' : '#667eea'};
-    background: white;
-    box-shadow: 0 0 0 3px ${props => props.hasError ? 'rgba(244, 67, 54, 0.1)' : 'rgba(102, 126, 234, 0.1)'};
+    border-color: ${props => props.$hasError ? '#ED4245' : '#5865F2'};
+    box-shadow: 0 0 0 2px ${props => props.$hasError ? 'rgba(237, 66, 69, 0.2)' : 'rgba(88, 101, 242, 0.2)'};
   }
 
   &::placeholder {
-    color: #999;
+    color: #72767D;
   }
 
   &:disabled {
-    opacity: 0.6;
+    opacity: 0.5;
     cursor: not-allowed;
   }
 `;
 
-const ConnectButton = styled.button`
-  width: 100%;
-  padding: 16px;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: white;
-  border: none;
-  border-radius: 12px;
-  font-size: 16px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  position: relative;
-  overflow: hidden;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-
-  &:hover:not(:disabled) {
-    transform: translateY(-2px);
-    box-shadow: 0 10px 20px rgba(102, 126, 234, 0.4);
-  }
-
-  &:active {
-    transform: translateY(0);
-  }
-
-  &:disabled {
-    opacity: 0.6;
-    cursor: not-allowed;
-    transform: none;
-  }
-
-  &::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-    transition: left 0.5s;
-  }
-
-  &:hover::before {
-    left: 100%;
-  }
-`;
-
-const LoadingSpinner = styled.div`
-  width: 20px;
-  height: 20px;
-  border: 2px solid rgba(255, 255, 255, 0.3);
-  border-top: 2px solid white;
-  border-radius: 50%;
-  animation: spin 1s linear infinite;
-
-  @keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
-  }
-`;
-
-const ErrorMessage = styled.div`
-  background: #fee;
-  color: #c53030;
-  padding: 12px 16px;
-  border-radius: 8px;
-  margin-bottom: 20px;
-  font-size: 14px;
-  border: 1px solid #fed7d7;
-  text-align: left;
-  animation: fadeIn 0.3s ease-out;
-
-  @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(-10px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-`;
-
-const DemoNotice = styled.div`
-  margin-top: 30px;
-  padding: 20px;
-  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-  border-radius: 12px;
-  border-left: 4px solid #667eea;
-  text-align: left;
-
-  h4 {
-    color: #667eea;
-    font-size: 14px;
-    font-weight: 600;
-    margin-bottom: 8px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-
-  p {
-    font-size: 13px;
-    color: #666;
-    line-height: 1.4;
-    margin-bottom: 4px;
-
-    &:last-child {
-      margin-bottom: 0;
-    }
-  }
-
-  .icon {
-    font-size: 16px;
-  }
-`;
-
-const CharacterCount = styled.div<{ isOverLimit: boolean }>`
-  font-size: 12px;
-  color: ${props => props.isOverLimit ? '#f44336' : '#666'};
+const CharCount = styled.span<{ $isOver: boolean }>`
+  font-size: 11px;
+  color: ${props => props.$isOver ? '#ED4245' : '#949BA4'};
   text-align: right;
   margin-top: 4px;
 `;
 
-const LoginForm: React.FC<LoginFormProps> = observer(({ onLogin, loading = false, error }) => {
+const ErrorAlert = styled.div`
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 12px;
+  background: rgba(237, 66, 69, 0.1);
+  border-radius: 4px;
+  color: #F2F3F5;
+  font-size: 14px;
+  line-height: 1.4;
+
+  svg {
+    color: #ED4245;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+`;
+
+const SubmitButton = styled.button`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  padding: 14px;
+  background: #5865F2;
+  color: white;
+  font-size: 14px;
+  font-weight: 500;
+  border-radius: 4px;
+  margin-top: 8px;
+  transition: background 0.15s ease;
+
+  &:hover:not(:disabled) {
+    background: #4752C4;
+  }
+
+  &:active:not(:disabled) {
+    background: #3C45A5;
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+`;
+
+const SpinIcon = styled.span`
+  display: flex;
+  animation: ${spin} 1s linear infinite;
+`;
+
+const InfoBox = styled.div`
+  margin-top: 24px;
+  padding: 16px;
+  background: #1E1F22;
+  border-radius: 4px;
+  border-left: 3px solid #5865F2;
+`;
+
+const InfoTitle = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  font-weight: 600;
+  color: #F2F3F5;
+  margin-bottom: 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+
+  svg {
+    color: #5865F2;
+  }
+`;
+
+const InfoText = styled.p`
+  font-size: 13px;
+  color: #B5BAC1;
+  line-height: 1.5;
+  margin: 0;
+
+  & + & {
+    margin-top: 4px;
+  }
+`;
+
+/**
+ * 验证 WebSocket URL 格式
+ */
+const validateWebSocketUrl = (url: string): boolean => {
+  try {
+    const urlObj = new URL(url);
+    return urlObj.protocol === 'ws:' || urlObj.protocol === 'wss:';
+  } catch {
+    return false;
+  }
+};
+
+/**
+ * 登录表单组件
+ */
+const LoginForm: React.FC<LoginFormProps> = ({ onLogin, loading = false, error }) => {
   const [username, setUsername] = useState('');
   const [serverUrl, setServerUrl] = useState('ws://localhost:8080');
   const [localError, setLocalError] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const maxUsernameLength = 20;
-  const isUsernameOverLimit = username.length > maxUsernameLength;
+  // 派生状态
+  const isUsernameOverLimit = username.length > VALIDATION.USERNAME_MAX;
   const displayError = error || localError;
+  const isDisabled = loading || isSubmitting;
 
-  const validateWebSocketUrl = (url: string): boolean => {
-    try {
-      const urlObj = new URL(url);
-      return urlObj.protocol === 'ws:' || urlObj.protocol === 'wss:';
-    } catch {
-      return false;
+  // 表单验证
+  const validateForm = useCallback((): string | null => {
+    const trimmedUsername = username.trim();
+    const trimmedUrl = serverUrl.trim();
+
+    if (!trimmedUsername) {
+      return '请输入用户名';
     }
-  };
+    if (trimmedUsername.length < VALIDATION.USERNAME_MIN) {
+      return `用户名至少需要 ${VALIDATION.USERNAME_MIN} 个字符`;
+    }
+    if (trimmedUsername.length > VALIDATION.USERNAME_MAX) {
+      return `用户名不能超过 ${VALIDATION.USERNAME_MAX} 个字符`;
+    }
+    if (!trimmedUrl) {
+      return '请输入服务器地址';
+    }
+    if (!validateWebSocketUrl(trimmedUrl)) {
+      return '请输入有效的 WebSocket 地址 (ws:// 或 wss://)';
+    }
+    return null;
+  }, [username, serverUrl]);
 
-  const handleSubmit = async (e: React.FormEvent): Promise<void> => {
+  // 提交处理
+  const handleSubmit = useCallback(async (e: React.FormEvent): Promise<void> => {
     e.preventDefault();
     setLocalError('');
 
-    // 前端验证
-    if (!username.trim()) {
-      setLocalError('请输入用户名');
-      return;
-    }
-
-    if (username.trim().length < 2) {
-      setLocalError('用户名至少需要2个字符');
-      return;
-    }
-
-    if (isUsernameOverLimit) {
-      setLocalError(`用户名不能超过${maxUsernameLength}个字符`);
-      return;
-    }
-
-    if (!serverUrl.trim()) {
-      setLocalError('请输入服务器地址');
-      return;
-    }
-
-    if (!validateWebSocketUrl(serverUrl.trim())) {
-      setLocalError('请输入有效的 WebSocket 地址 (ws:// 或 wss://)');
+    const validationError = validateForm();
+    if (validationError) {
+      setLocalError(validationError);
       return;
     }
 
     setIsSubmitting(true);
-    
     try {
-      await onLogin({ username: username.trim(), serverUrl: serverUrl.trim() });
-    } catch (err) {
-      // 错误已在上层处理
+      await onLogin({
+        username: username.trim(),
+        serverUrl: serverUrl.trim(),
+      });
+    } catch {
+      // 错误由父组件处理
     } finally {
       setIsSubmitting(false);
     }
-  };
+  }, [validateForm, onLogin, username, serverUrl]);
 
-  const handleUsernameChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
-    const value = e.target.value;
-    setUsername(value);
+  // 输入处理
+  const handleUsernameChange = useCallback((e: React.ChangeEvent<HTMLInputElement>): void => {
+    setUsername(e.target.value);
     setLocalError('');
-  };
+  }, []);
 
-  const handleServerUrlChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
+  const handleServerUrlChange = useCallback((e: React.ChangeEvent<HTMLInputElement>): void => {
     setServerUrl(e.target.value);
     setLocalError('');
-  };
+  }, []);
 
-  const isDisabled = loading || isSubmitting;
+  // 字符计数显示
+  const charCountDisplay = useMemo(() => (
+    <CharCount $isOver={isUsernameOverLimit}>
+      {username.length}/{VALIDATION.USERNAME_MAX}
+    </CharCount>
+  ), [username.length, isUsernameOverLimit]);
 
   return (
     <LoginContainer>
-      <LoginBox>
-        <Title>🚀 WebSocket 聊天室</Title>
-        <Subtitle>基于 React + MobX + TypeScript 的实时通信演示</Subtitle>
+      <LoginCard>
+        <Logo>
+          <MessageSquare size={32} />
+          <Title>WebSocket Chat</Title>
+        </Logo>
+        <Subtitle>基于 React + MobX + TypeScript 的实时聊天演示</Subtitle>
 
-        <form onSubmit={handleSubmit}>
-          {displayError && <ErrorMessage>{displayError}</ErrorMessage>}
-          
+        <Form onSubmit={handleSubmit}>
+          {displayError && (
+            <ErrorAlert>
+              <AlertCircle size={18} />
+              <span>{displayError}</span>
+            </ErrorAlert>
+          )}
+
           <FormGroup>
             <Label htmlFor="username">用户名</Label>
-            <Input
-              id="username"
-              type="text"
-              value={username}
-              onChange={handleUsernameChange}
-              placeholder="请输入您的用户名"
-              disabled={isDisabled}
-              autoComplete="username"
-              autoFocus
-              hasError={isUsernameOverLimit}
-              maxLength={maxUsernameLength + 5} // 允许稍微超过限制以显示错误
-            />
-            <CharacterCount isOverLimit={isUsernameOverLimit}>
-              {username.length}/{maxUsernameLength}
-            </CharacterCount>
+            <InputWrapper>
+              <InputIcon><User size={18} /></InputIcon>
+              <Input
+                id="username"
+                type="text"
+                value={username}
+                onChange={handleUsernameChange}
+                placeholder="请输入用户名"
+                disabled={isDisabled}
+                autoComplete="username"
+                autoFocus
+                $hasError={isUsernameOverLimit}
+                maxLength={VALIDATION.USERNAME_INPUT_MAX}
+              />
+            </InputWrapper>
+            {charCountDisplay}
           </FormGroup>
 
           <FormGroup>
             <Label htmlFor="serverUrl">服务器地址</Label>
-            <Input
-              id="serverUrl"
-              type="text"
-              value={serverUrl}
-              onChange={handleServerUrlChange}
-              placeholder="WebSocket服务器地址"
-              disabled={isDisabled}
-              autoComplete="url"
-            />
+            <InputWrapper>
+              <InputIcon><Server size={18} /></InputIcon>
+              <Input
+                id="serverUrl"
+                type="text"
+                value={serverUrl}
+                onChange={handleServerUrlChange}
+                placeholder="ws://localhost:8080"
+                disabled={isDisabled}
+                autoComplete="url"
+              />
+            </InputWrapper>
           </FormGroup>
 
-          <ConnectButton type="submit" disabled={isDisabled || isUsernameOverLimit}>
-            {isDisabled && <LoadingSpinner />}
-            {isDisabled ? '连接中...' : '连接聊天室'}
-          </ConnectButton>
-        </form>
+          <SubmitButton type="submit" disabled={isDisabled || isUsernameOverLimit}>
+            {isDisabled ? (
+              <>
+                <SpinIcon><Loader size={18} /></SpinIcon>
+                连接中...
+              </>
+            ) : (
+              <>
+                <LogIn size={18} />
+                连接
+              </>
+            )}
+          </SubmitButton>
+        </Form>
 
-        <DemoNotice>
-          <h4>
-            <span className="icon">💡</span>
-            演示说明
-          </h4>
-          <p>这是一个完整的 React + MobX + TypeScript 演示项目</p>
-          <p>包含自动重连、心跳检测、消息队列等功能</p>
-          <p>如需完整体验，请启动 WebSocket 服务器</p>
-          <p>没有服务器时也可以体验前端界面功能</p>
-        </DemoNotice>
-      </LoginBox>
+        <InfoBox>
+          <InfoTitle>
+            <Info size={14} />
+            Demo Info
+          </InfoTitle>
+          <InfoText>完整的 React + MobX + TypeScript 演示项目</InfoText>
+          <InfoText>支持自动重连、心跳检测、消息队列等功能</InfoText>
+          <InfoText>启动 WebSocket 服务端以获得完整体验</InfoText>
+        </InfoBox>
+      </LoginCard>
     </LoginContainer>
   );
-});
+};
 
 LoginForm.displayName = 'LoginForm';
 

@@ -1,3 +1,10 @@
+---
+aliases: ["基线与x-height"]
+title: "基线与x-height"
+tags: ["CSS", "前端基础"]
+updated: 2026-01-09
+---
+
 ## 概述
 基线（baseline）和x-height是CSS文本布局中的重要概念，它们决定了文字的垂直对齐方式和行内元素的布局行为。理解这些概念对于精确控制文本排版至关重要。
 

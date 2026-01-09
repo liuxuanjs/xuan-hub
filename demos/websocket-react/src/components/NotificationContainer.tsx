@@ -1,12 +1,24 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { observer } from 'mobx-react-lite';
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 import type { NotificationContainerProps, Notification, NotificationLevel } from '@/types';
+import { Check, AlertCircle, Info, X } from './common/Icons';
+
+const slideIn = keyframes`
+  from {
+    opacity: 0;
+    transform: translateX(100%);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+`;
 
 const Container = styled.div`
   position: fixed;
-  top: 20px;
-  right: 20px;
+  top: 16px;
+  right: 16px;
   z-index: 2000;
   display: flex;
   flex-direction: column;
@@ -14,69 +26,57 @@ const Container = styled.div`
   pointer-events: none;
 
   @media (max-width: 768px) {
-    left: 20px;
-    right: 20px;
-    top: 10px;
+    left: 16px;
+    right: 16px;
+    top: 12px;
   }
 `;
 
-interface NotificationProps {
-  type: NotificationLevel;
-}
-
-const NotificationItem = styled.div<NotificationProps>`
-  background: white;
-  border-radius: 12px;
-  padding: 16px 20px;
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
-  border-left: 4px solid ${props => {
-    switch (props.type) {
-      case 'success': return '#4caf50';
-      case 'error': return '#f44336';
-      case 'warning': return '#ff9800';
-      case 'info': return '#2196f3';
-      default: return '#667eea';
+const NotificationItem = styled.div<{ $type: NotificationLevel }>`
+  background: #2B2D31;
+  border-radius: 4px;
+  padding: 12px 16px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
+  border-left: 3px solid ${props => {
+    switch (props.$type) {
+      case 'success': return '#23A55A';
+      case 'error': return '#ED4245';
+      case 'warning': return '#F0B232';
+      case 'info': return '#5865F2';
+      default: return '#5865F2';
     }
   }};
-  animation: slideInRight 0.3s ease-out;
-  max-width: 350px;
+  animation: ${slideIn} 0.2s ease-out;
+  max-width: 320px;
   pointer-events: auto;
   position: relative;
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: background 0.1s ease;
 
   &:hover {
-    transform: translateX(-4px);
-    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
-  }
-
-  @keyframes slideInRight {
-    from {
-      opacity: 0;
-      transform: translateX(100%);
-    }
-    to {
-      opacity: 1;
-      transform: translateX(0);
-    }
+    background: #35373C;
   }
 
   @media (max-width: 768px) {
     max-width: none;
-    margin: 0;
   }
 `;
 
-const NotificationContent = styled.div`
-  display: flex;
-  align-items: flex-start;
-  gap: 12px;
-`;
-
-const NotificationIcon = styled.div`
-  font-size: 18px;
+const IconWrapper = styled.div<{ $type: NotificationLevel }>`
   flex-shrink: 0;
-  margin-top: 1px;
+  color: ${props => {
+    switch (props.$type) {
+      case 'success': return '#23A55A';
+      case 'error': return '#ED4245';
+      case 'warning': return '#F0B232';
+      case 'info': return '#5865F2';
+      default: return '#5865F2';
+    }
+  }};
+  display: flex;
 `;
 
 const NotificationBody = styled.div`
@@ -87,66 +87,51 @@ const NotificationBody = styled.div`
 const NotificationMessage = styled.div`
   font-size: 14px;
   font-weight: 500;
-  color: #333;
+  color: #F2F3F5;
   line-height: 1.4;
   word-break: break-word;
 `;
 
 const NotificationTime = styled.div`
   font-size: 11px;
-  color: #666;
+  color: #949BA4;
   margin-top: 4px;
-  opacity: 0.8;
 `;
 
 const CloseButton = styled.button`
-  position: absolute;
-  top: 8px;
-  right: 8px;
-  width: 24px;
-  height: 24px;
-  border: none;
-  background: transparent;
-  cursor: pointer;
-  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  border-radius: 4px;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 14px;
-  color: #999;
-  transition: all 0.2s ease;
+  color: #949BA4;
+  flex-shrink: 0;
+  transition: background 0.1s ease, color 0.1s ease;
 
   &:hover {
-    background: #f0f0f0;
-    color: #666;
-  }
-
-  &:active {
-    transform: scale(0.95);
+    background: #404249;
+    color: #F2F3F5;
   }
 `;
 
-interface ProgressBarProps {
-  type: NotificationLevel;
-  duration: number;
-}
-
-const ProgressBar = styled.div<ProgressBarProps>`
+const ProgressBar = styled.div<{ $type: NotificationLevel; $duration: number }>`
   position: absolute;
   bottom: 0;
   left: 0;
+  right: 0;
   height: 2px;
   background: ${props => {
-    switch (props.type) {
-      case 'success': return '#4caf50';
-      case 'error': return '#f44336';
-      case 'warning': return '#ff9800';
-      case 'info': return '#2196f3';
-      default: return '#667eea';
+    switch (props.$type) {
+      case 'success': return '#23A55A';
+      case 'error': return '#ED4245';
+      case 'warning': return '#F0B232';
+      case 'info': return '#5865F2';
+      default: return '#5865F2';
     }
   }};
-  border-radius: 0 0 12px 12px;
-  animation: progressBar ${props => props.duration}ms linear;
+  border-radius: 0 0 4px 0;
+  animation: progressBar ${props => props.$duration}ms linear;
   transform-origin: left;
 
   @keyframes progressBar {
@@ -159,16 +144,9 @@ const ProgressBar = styled.div<ProgressBarProps>`
   }
 `;
 
-const getNotificationIcon = (type: NotificationLevel): string => {
-  switch (type) {
-    case 'success': return '✅';
-    case 'error': return '❌';
-    case 'warning': return '⚠️';
-    case 'info': return 'ℹ️';
-    default: return '📢';
-  }
-};
-
+/**
+ * 格式化时间
+ */
 const formatTime = (timestamp: number): string => {
   const now = new Date();
   const notificationTime = new Date(timestamp);
@@ -177,12 +155,29 @@ const formatTime = (timestamp: number): string => {
   if (diffInSeconds < 60) {
     return '刚刚';
   } else if (diffInSeconds < 3600) {
-    return `${Math.floor(diffInSeconds / 60)}分钟前`;
+    return `${Math.floor(diffInSeconds / 60)} 分钟前`;
   } else {
-    return notificationTime.toLocaleTimeString('zh-CN', { 
-      hour: '2-digit', 
-      minute: '2-digit' 
+    return notificationTime.toLocaleTimeString('zh-CN', {
+      hour: '2-digit',
+      minute: '2-digit',
     });
+  }
+};
+
+/**
+ * 获取通知图标
+ */
+const NotificationIcon: React.FC<{ type: NotificationLevel }> = ({ type }) => {
+  switch (type) {
+    case 'success':
+      return <Check size={18} />;
+    case 'error':
+      return <AlertCircle size={18} />;
+    case 'warning':
+      return <AlertCircle size={18} />;
+    case 'info':
+    default:
+      return <Info size={18} />;
   }
 };
 
@@ -191,51 +186,40 @@ interface NotificationItemComponentProps {
   onRemove: (id: string) => void;
 }
 
-const NotificationItemComponent: React.FC<NotificationItemComponentProps> = observer(({ 
-  notification, 
-  onRemove 
+const NotificationItemComponent: React.FC<NotificationItemComponentProps> = observer(({
+  notification,
+  onRemove
 }) => {
   const { id, message, type, duration } = notification;
-  const [_currentTime, setCurrentTime] = React.useState(Date.now());
 
-  // 更新时间显示
-  React.useEffect(() => {
-    const timer = setInterval(() => {
-      setCurrentTime(Date.now());
-    }, 30000); // 每30秒更新一次
-
-    return () => clearInterval(timer);
-  }, []);
-
-  const handleClick = (): void => {
+  const handleClick = useCallback((): void => {
     onRemove(id);
-  };
+  }, [id, onRemove]);
 
-  const handleCloseClick = (e: React.MouseEvent): void => {
+  const handleCloseClick = useCallback((e: React.MouseEvent): void => {
     e.stopPropagation();
     onRemove(id);
-  };
+  }, [id, onRemove]);
 
   return (
-    <NotificationItem type={type} onClick={handleClick}>
-      <NotificationContent>
-        <NotificationIcon>
-          {getNotificationIcon(type)}
-        </NotificationIcon>
-        <NotificationBody>
-          <NotificationMessage>{message}</NotificationMessage>
-          <NotificationTime>
-            {formatTime(notification.timestamp || Date.now())}
-          </NotificationTime>
-        </NotificationBody>
-      </NotificationContent>
-      
-      <CloseButton onClick={handleCloseClick}>
-        ×
+    <NotificationItem $type={type} onClick={handleClick}>
+      <IconWrapper $type={type}>
+        <NotificationIcon type={type} />
+      </IconWrapper>
+
+      <NotificationBody>
+        <NotificationMessage>{message}</NotificationMessage>
+        <NotificationTime>
+          {formatTime(notification.timestamp || Date.now())}
+        </NotificationTime>
+      </NotificationBody>
+
+      <CloseButton onClick={handleCloseClick} aria-label="关闭通知">
+        <X size={14} />
       </CloseButton>
-      
+
       {duration && notification.autoClose && (
-        <ProgressBar type={type} duration={duration} />
+        <ProgressBar $type={type} $duration={duration} />
       )}
     </NotificationItem>
   );
@@ -243,9 +227,9 @@ const NotificationItemComponent: React.FC<NotificationItemComponentProps> = obse
 
 NotificationItemComponent.displayName = 'NotificationItem';
 
-const NotificationContainer: React.FC<NotificationContainerProps> = observer(({ 
-  notifications, 
-  onRemove 
+const NotificationContainer: React.FC<NotificationContainerProps> = observer(({
+  notifications,
+  onRemove
 }) => {
   if (!notifications || notifications.length === 0) {
     return null;

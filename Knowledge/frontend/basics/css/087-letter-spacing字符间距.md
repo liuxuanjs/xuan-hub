@@ -1,3 +1,10 @@
+---
+aliases: ["letter-spacing字符间距"]
+title: "letter-spacing字符间距"
+tags: ["CSS", "前端基础"]
+updated: 2026-01-09
+---
+
 ## 概述
 letter-spacing属性控制字符之间的间距，对文本的可读性和视觉效果有重要影响。合理使用可以提升文本的美观度和可读性。
 

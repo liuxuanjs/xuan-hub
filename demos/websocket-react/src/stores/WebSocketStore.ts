@@ -1,144 +1,294 @@
 import { makeAutoObservable, runInAction } from 'mobx';
-import type { 
-  WebSocketReadyState, 
-  WebSocketOptions, 
-  ConnectionInfo,
+import { ConnectionManager, ConnectionInfo } from '@/core/websocket';
+import type {
+  WebSocketReadyState,
+  WebSocketOptions,
+  ConnectionInfo as LegacyConnectionInfo,
   PingMessage,
-  PongMessage 
+  ConnectionState,
 } from '@/types';
 
 /**
- * WebSocket Store
- * 使用 MobX 管理 WebSocket 连接状态和消息
- * 
+ * WebSocket Store（重构版）
+ * 使用 ConnectionManager 管理连接，提供 MobX 响应式状态
+ *
  * 🏆 最佳实践实现：
- * 1. 【连接管理】自动重连机制、合理的重连间隔和最大重试次数
- * 2. 【消息处理】JSON 格式传输、消息类型分发机制
- * 3. 【错误处理】捕获所有错误、用户友好提示、错误日志
- * 4. 【性能优化】消息队列、心跳检测、避免频繁小消息
+ * 1. 【连接管理】使用 ConnectionManager + 状态机 + 指数退避重连
+ * 2. 【消息处理】消息重试队列 + 批处理 + JSON 序列化
+ * 3. 【错误处理】统一错误处理 + 自动恢复 + 用户提示
+ * 4. 【性能优化】消息队列 + 心跳检测 + 网络状态检测
  */
 export class WebSocketStore {
-  // WebSocket 实例
-  private ws: WebSocket | null = null;
-  
-  // 连接URL
+  // 连接管理器
+  private connectionManager: ConnectionManager;
+
+  // 连接 URL
   url: string = '';
-  
-  // 连接状态
+
+  // 连接状态 (兼容旧版)
   readyState: WebSocketReadyState = 'CLOSED';
-  
+
   // 最后接收的消息
   lastMessage: { data: any; timestamp: number } | null = null;
-  
-  // 连接信息
-  connectionInfo: ConnectionInfo = {
+
+  // 连接信息 (兼容旧版)
+  connectionInfo: LegacyConnectionInfo = {
     url: '',
     isConnected: false,
     isConnecting: false,
     reconnectAttempts: 0,
-    maxReconnectAttempts: 5,
+    maxReconnectAttempts: 10,
     latency: 0,
     messageQueueLength: 0,
   };
-  
+
+  // 增强连接信息
+  enhancedConnectionInfo: ConnectionInfo | null = null;
+
   // 配置选项
   private options: Required<WebSocketOptions> = {
-    reconnectInterval: 3000, // 3秒重连间隔
-    maxReconnectAttempts: 5, // 5次最大的重连次数
-    heartbeatInterval: 30000, // 30秒心跳间隔
-    heartbeatTimeout: 10000, // 10秒心跳超时
-    enableHeartbeat: true, // 启用心跳检测
-    enableAutoReconnect: true, // 启用自动重连
-    debug: true, // 启用调试模式
-    onOpen: () => {}, // 连接建立回调
-    onMessage: () => {}, // 消息接收回调
-    onClose: () => {}, // 连接关闭回调
-    onError: () => {}, // 错误回调
+    reconnectInterval: 1000,
+    maxReconnectAttempts: 10,
+    heartbeatInterval: 30000,
+    heartbeatTimeout: 10000,
+    enableHeartbeat: true,
+    enableAutoReconnect: true,
+    debug: process.env.NODE_ENV === 'development',
+    onOpen: () => {},
+    onMessage: () => {},
+    onClose: () => {},
+    onError: () => {},
   };
-  
-  // 重连相关 - 🏆【连接管理最佳实践】
-  private reconnectAttempts = 0;
-  private reconnectTimer: NodeJS.Timeout | null = null;
-  
-  // 心跳相关 - 🏆【性能优化最佳实践】保持连接活跃
-  private heartbeatTimer: NodeJS.Timeout | null = null;
-  private heartbeatTimeoutTimer: NodeJS.Timeout | null = null;
-  private lastPingTime = 0;
-  
-  // 消息队列 - 🏆【性能优化最佳实践】避免消息丢失
-  private messageQueue: string[] = [];
-  
-  // 事件监听器 - 🏆【消息处理最佳实践】消息类型分发机制
+
+  // 事件监听器
   private eventListeners: Map<string, Set<Function>> = new Map();
 
   constructor() {
-    makeAutoObservable(this, {}, { autoBind: true });
+    // 创建连接管理器
+    this.connectionManager = new ConnectionManager({
+      heartbeatInterval: this.options.heartbeatInterval,
+      heartbeatTimeout: this.options.heartbeatTimeout,
+      enableHeartbeat: this.options.enableHeartbeat,
+      enableAutoReconnect: this.options.enableAutoReconnect,
+      debug: this.options.debug,
+      reconnect: {
+        initialDelay: this.options.reconnectInterval,
+        maxRetries: this.options.maxReconnectAttempts,
+        maxDelay: 30000,
+        multiplier: 1.5,
+        jitter: true,
+        jitterFactor: 0.3,
+      },
+      messageRetry: {
+        maxRetries: 3,
+        retryDelay: 2000,
+        maxQueueSize: 100,
+        messageExpiry: 5 * 60 * 1000,
+      },
+    });
+
+    // 设置事件监听
+    this.setupConnectionManagerListeners();
+
+    makeAutoObservable(this, {
+      // 排除私有字段
+      connectionManager: false,
+      options: false,
+      eventListeners: false,
+      // 排除私有方法
+      setupConnectionManagerListeners: false,
+      mapStateToReadyState: false,
+      updateConnectionInfo: false,
+      emit: false,
+      log: false,
+    }, { autoBind: true });
+  }
+
+  /**
+   * 设置连接管理器的事件监听
+   */
+  private setupConnectionManagerListeners(): void {
+    // 状态变化
+    this.connectionManager.on('stateChange', ({ newState }) => {
+      runInAction(() => {
+        this.readyState = this.mapStateToReadyState(newState);
+        this.updateConnectionInfo();
+      });
+    });
+
+    // 连接成功
+    this.connectionManager.on('connected', () => {
+      runInAction(() => {
+        this.readyState = 'OPEN';
+        this.connectionInfo.isConnected = true;
+        this.connectionInfo.isConnecting = false;
+        this.connectionInfo.reconnectAttempts = 0;
+        this.connectionInfo.lastConnectedAt = Date.now();
+        this.updateConnectionInfo();
+      });
+
+      this.options.onOpen(new Event('open'));
+      this.emit('connected', { url: this.url });
+    });
+
+    // 断开连接
+    this.connectionManager.on('disconnected', ({ code, reason, clean }) => {
+      runInAction(() => {
+        this.readyState = 'CLOSED';
+        this.connectionInfo.isConnected = false;
+        this.connectionInfo.isConnecting = false;
+        this.connectionInfo.lastDisconnectedAt = Date.now();
+        this.updateConnectionInfo();
+      });
+
+      const closeEvent = new CloseEvent('close', { code, reason, wasClean: clean });
+      this.options.onClose(closeEvent);
+      this.emit('disconnected', { code, reason, wasClean: clean });
+    });
+
+    // 消息接收
+    this.connectionManager.on('message', ({ data, raw }) => {
+      runInAction(() => {
+        this.lastMessage = { data, timestamp: Date.now() };
+      });
+
+      const messageEvent = new MessageEvent('message', { data: raw });
+      this.options.onMessage(messageEvent);
+      this.emit('message', { data, raw });
+    });
+
+    // 错误
+    this.connectionManager.on('error', ({ error }) => {
+      this.options.onError(error);
+      this.emit('error', { error });
+    });
+
+    // 重连中
+    this.connectionManager.on('reconnecting', ({ attempt, maxAttempts }) => {
+      runInAction(() => {
+        this.readyState = 'CONNECTING';
+        this.connectionInfo.isConnecting = true;
+        this.connectionInfo.reconnectAttempts = attempt;
+        this.connectionInfo.maxReconnectAttempts = maxAttempts;
+        this.updateConnectionInfo();
+      });
+
+      this.emit('reconnecting', { attempt, maxAttempts });
+    });
+
+    // 重连失败
+    this.connectionManager.on('reconnectFailed', ({ attempts, maxAttempts }) => {
+      runInAction(() => {
+        this.readyState = 'CLOSED';
+        this.connectionInfo.isConnecting = false;
+        this.updateConnectionInfo();
+      });
+
+      this.emit('reconnectFailed', { attempts, maxAttempts });
+    });
+
+    // 延迟更新
+    this.connectionManager.on('latency', ({ latency }) => {
+      runInAction(() => {
+        this.connectionInfo.latency = latency;
+        this.updateConnectionInfo();
+      });
+
+      this.emit('latency', { latency });
+    });
+
+    // 消息状态更新
+    this.connectionManager.on('messageStatus', (message) => {
+      runInAction(() => {
+        const info = this.connectionManager.getConnectionInfo();
+        this.connectionInfo.messageQueueLength = info.pendingMessages;
+        this.updateConnectionInfo();
+      });
+
+      this.emit('messageStatus', message);
+    });
+  }
+
+  /**
+   * 映射状态到旧版 ReadyState
+   */
+  private mapStateToReadyState(state: ConnectionState): WebSocketReadyState {
+    switch (state) {
+      case 'CONNECTED':
+        return 'OPEN';
+      case 'CONNECTING':
+      case 'RECONNECTING':
+        return 'CONNECTING';
+      case 'DISCONNECTING':
+        return 'CLOSING';
+      default:
+        return 'CLOSED';
+    }
+  }
+
+  /**
+   * 更新连接信息
+   */
+  private updateConnectionInfo(): void {
+    const info = this.connectionManager.getConnectionInfo();
+    this.enhancedConnectionInfo = info;
+
+    this.connectionInfo.url = info.url;
+    this.connectionInfo.isConnected = info.isConnected;
+    this.connectionInfo.isConnecting = info.isConnecting;
+    this.connectionInfo.reconnectAttempts = info.reconnectAttempts;
+    this.connectionInfo.maxReconnectAttempts = info.maxReconnectAttempts;
+    this.connectionInfo.latency = info.latency;
+    this.connectionInfo.messageQueueLength = info.pendingMessages;
+    this.connectionInfo.lastConnectedAt = info.lastConnectedAt;
+    this.connectionInfo.lastDisconnectedAt = info.lastDisconnectedAt;
   }
 
   /**
    * 连接 WebSocket
-   * 🏆【连接管理最佳实践】在页面卸载时正确关闭连接
    */
   connect = (url: string, options: Partial<WebSocketOptions> = {}): void => {
-    if (this.isConnecting || this.isConnected) {
+    if (this.connectionManager.isConnected() || this.connectionManager.isConnecting()) {
       this.log('已经连接或正在连接中');
       return;
     }
 
     this.url = url;
     this.options = { ...this.options, ...options };
-    
-    this.setConnecting(true);
-    
-    try {
-      this.log(`正在连接到: ${url}`);
-      this.ws = new WebSocket(url);
-      
-      this.setupEventListeners();
-      this.emit('connecting', { url });
-      
-    } catch (error) {
-      this.log('连接失败:', error);
-      this.setConnecting(false);
-      this.handleError(error);
-    }
+
+    // 更新连接管理器配置
+    this.connectionManager.updateOptions({
+      heartbeatInterval: this.options.heartbeatInterval,
+      heartbeatTimeout: this.options.heartbeatTimeout,
+      enableHeartbeat: this.options.enableHeartbeat,
+      enableAutoReconnect: this.options.enableAutoReconnect,
+      debug: this.options.debug,
+    });
+
+    runInAction(() => {
+      this.connectionInfo.url = url;
+    });
+
+    this.emit('connecting', { url });
+    this.connectionManager.connect(url);
   };
 
   /**
    * 断开连接
    */
   disconnect = (code = 1000, reason = '正常关闭'): void => {
-    this.options.enableAutoReconnect = false;
-    this.clearTimers();
-    
-    if (this.ws && this.ws.readyState === WebSocket.OPEN) {
-      this.ws.close(code, reason);
-    }
-    
-    this.reset();
+    this.connectionManager.disconnect(code, reason);
   };
 
   /**
    * 发送消息
-   * 🏆【消息处理最佳实践】使用 JSON 格式传输结构化数据
-   * 🏆【性能优化最佳实践】消息队列避免消息丢失
    */
   sendMessage = (data: any): boolean => {
-    const message = typeof data === 'string' ? data : JSON.stringify(data);
-    
-    if (this.isConnected && this.ws?.readyState === WebSocket.OPEN) {
-      this.ws.send(message);
-      this.log('发送消息:', data);
-      return true;
-    } else {
-      // 连接未就绪时，将消息加入队列
-      this.messageQueue.push(message);
-      runInAction(() => {
-        this.connectionInfo.messageQueueLength = this.messageQueue.length;
-      });
-      this.log('消息已加入队列:', data);
-      return false;
-    }
+    const messageId = this.connectionManager.send(data);
+    const success = this.connectionManager.isConnected();
+
+    this.log(success ? '发送消息:' : '消息已加入队列:', data);
+    return success;
   };
 
   /**
@@ -146,279 +296,7 @@ export class WebSocketStore {
    */
   sendPing = (): void => {
     if (!this.isConnected) return;
-    
-    this.lastPingTime = Date.now();
-    const pingMessage: PingMessage = {
-      type: 'ping',
-      timestamp: this.lastPingTime,
-    };
-    
-    this.sendMessage(pingMessage);
-    
-    // 设置心跳超时定时器
-    this.heartbeatTimeoutTimer = setTimeout(() => {
-      this.log('心跳超时，准备重连');
-      this.ws?.close(4000, '心跳超时');
-    }, this.options.heartbeatTimeout);
-  };
-
-  /**
-   * 处理心跳响应
-   */
-  private handlePong = (message: PongMessage): void => {
-    if (this.heartbeatTimeoutTimer) {
-      clearTimeout(this.heartbeatTimeoutTimer);
-      this.heartbeatTimeoutTimer = null;
-    }
-    
-    // 计算延迟
-    if (message.timestamp === this.lastPingTime) {
-      const latency = Date.now() - this.lastPingTime;
-      runInAction(() => {
-        this.connectionInfo.latency = latency;
-      });
-      this.log(`延迟: ${latency}ms`);
-      this.emit('latency', { latency });
-    }
-  };
-
-  /**
-   * 设置 WebSocket 事件监听器
-   */
-  private setupEventListeners = (): void => {
-    if (!this.ws) return;
-
-    this.ws.onopen = (event) => {
-      this.log('WebSocket 连接已建立');
-      this.setConnected(true);
-      this.reconnectAttempts = 0;
-      
-      runInAction(() => {
-        this.connectionInfo.reconnectAttempts = 0;
-        this.connectionInfo.lastConnectedAt = Date.now();
-      });
-
-      this.startHeartbeat();
-      this.sendQueuedMessages();
-      
-      this.options.onOpen(event);
-      this.emit('connected', { url: this.url, event });
-    };
-
-    this.ws.onmessage = (event) => {
-      try {
-        let data: any;
-        
-        // 🏆【消息处理最佳实践】使用 JSON 格式传输结构化数据
-        try {
-          data = JSON.parse(event.data);
-        } catch {
-          data = event.data;
-        }
-        
-        this.log('收到消息:', data);
-        
-        // 处理心跳响应
-        if (data?.type === 'pong') {
-          this.handlePong(data);
-          return;
-        }
-        
-        runInAction(() => {
-          this.lastMessage = { data, timestamp: Date.now() };
-        });
-        
-        this.options.onMessage(event);
-        this.emit('message', { data, raw: event.data, event });
-        
-      } catch (error) {
-        // 🏆【错误处理最佳实践】捕获并处理所有可能的错误
-        this.log('消息处理错误:', error);
-        this.emit('messageError', { error, event });
-      }
-    };
-
-    this.ws.onclose = (event) => {
-      this.log(`WebSocket 连接已关闭: ${event.code} - ${event.reason}`);
-      
-      this.setConnected(false);
-      this.stopHeartbeat();
-      
-      runInAction(() => {
-        this.connectionInfo.lastDisconnectedAt = Date.now();
-      });
-      
-      this.options.onClose(event);
-      this.emit('disconnected', { 
-        code: event.code,
-        reason: event.reason,
-        wasClean: event.wasClean,
-        event 
-      });
-      
-      // 如果不是正常关闭且启用了自动重连，则尝试重连
-      if (event.code !== 1000 && this.options.enableAutoReconnect) {
-        this.reconnect();
-      }
-    };
-
-    this.ws.onerror = (error) => {
-      this.log('WebSocket 错误:', error);
-      this.setConnecting(false);
-      
-      this.options.onError(error);
-      this.emit('error', { error });
-    };
-  };
-
-  /**
-   * 启动心跳检测
-   */
-  private startHeartbeat = (): void => {
-    if (!this.options.enableHeartbeat) return;
-    
-    this.heartbeatTimer = setInterval(() => {
-      this.sendPing();
-    }, this.options.heartbeatInterval);
-    
-    this.log('心跳检测已启动');
-  };
-
-  /**
-   * 停止心跳检测
-   */
-  private stopHeartbeat = (): void => {
-    if (this.heartbeatTimer) {
-      clearInterval(this.heartbeatTimer);
-      this.heartbeatTimer = null;
-    }
-    
-    if (this.heartbeatTimeoutTimer) {
-      clearTimeout(this.heartbeatTimeoutTimer);
-      this.heartbeatTimeoutTimer = null;
-    }
-    
-    this.log('心跳检测已停止');
-  };
-
-  /**
-   * 自动重连
-   * 🏆【连接管理最佳实践】设置合理的重连间隔和最大重试次数
-   */
-  private reconnect = (): void => {
-    if (!this.options.enableAutoReconnect) {
-      this.log('自动重连已禁用');
-      return;
-    }
-    
-    if (this.reconnectAttempts >= this.options.maxReconnectAttempts) {
-      this.log('已达到最大重连次数');
-      this.emit('reconnectFailed', {
-        attempts: this.reconnectAttempts,
-        maxAttempts: this.options.maxReconnectAttempts,
-      });
-      return;
-    }
-    
-    this.reconnectAttempts++;
-    this.log(`准备第 ${this.reconnectAttempts} 次重连...`);
-    
-    runInAction(() => {
-      this.connectionInfo.reconnectAttempts = this.reconnectAttempts;
-    });
-    
-    this.reconnectTimer = setTimeout(() => {
-      this.emit('reconnecting', {
-        attempt: this.reconnectAttempts,
-        maxAttempts: this.options.maxReconnectAttempts,
-      });
-      
-      this.setConnecting(false);
-      this.connect(this.url, this.options);
-    }, this.options.reconnectInterval);
-  };
-
-  /**
-   * 发送队列中的消息
-   */
-  private sendQueuedMessages = (): void => {
-    const queueLength = this.messageQueue.length;
-    
-    while (this.messageQueue.length > 0) {
-      const message = this.messageQueue.shift();
-      if (message && this.ws?.readyState === WebSocket.OPEN) {
-        this.ws.send(message);
-      }
-    }
-    
-    runInAction(() => {
-      this.connectionInfo.messageQueueLength = this.messageQueue.length;
-    });
-    
-    if (queueLength > 0) {
-      this.log(`发送了 ${queueLength} 条队列消息`);
-    }
-  };
-
-  /**
-   * 清理定时器
-   */
-  private clearTimers = (): void => {
-    if (this.reconnectTimer) {
-      clearTimeout(this.reconnectTimer);
-      this.reconnectTimer = null;
-    }
-    
-    this.stopHeartbeat();
-  };
-
-  /**
-   * 重置状态
-   */
-  private reset = (): void => {
-    runInAction(() => {
-      this.readyState = 'CLOSED';
-      this.connectionInfo.isConnected = false;
-      this.connectionInfo.isConnecting = false;
-      this.connectionInfo.messageQueueLength = 0;
-      this.lastMessage = null;
-    });
-    
-    this.ws = null;
-    this.lastPingTime = 0;
-    this.reconnectAttempts = 0;
-    this.messageQueue = [];
-  };
-
-  /**
-   * 设置连接中状态
-   */
-  private setConnecting = (connecting: boolean): void => {
-    runInAction(() => {
-      this.readyState = connecting ? 'CONNECTING' : 'CLOSED';
-      this.connectionInfo.isConnecting = connecting;
-      this.connectionInfo.url = this.url;
-    });
-  };
-
-  /**
-   * 设置连接状态
-   */
-  private setConnected = (connected: boolean): void => {
-    runInAction(() => {
-      this.readyState = connected ? 'OPEN' : 'CLOSED';
-      this.connectionInfo.isConnected = connected;
-      this.connectionInfo.isConnecting = false;
-      this.connectionInfo.url = this.url;
-    });
-  };
-
-  /**
-   * 处理错误
-   */
-  private handleError = (error: any): void => {
-    this.log('WebSocket 错误:', error);
-    this.emit('error', { error });
+    this.connectionManager.sendPing();
   };
 
   // 计算属性
@@ -437,8 +315,22 @@ export class WebSocketStore {
   /**
    * 获取连接信息
    */
-  getConnectionInfo = (): ConnectionInfo => {
+  getConnectionInfo = (): LegacyConnectionInfo => {
     return { ...this.connectionInfo };
+  };
+
+  /**
+   * 获取增强连接信息
+   */
+  getEnhancedConnectionInfo = (): ConnectionInfo | null => {
+    return this.enhancedConnectionInfo;
+  };
+
+  /**
+   * 获取连接管理器（用于高级操作）
+   */
+  getConnectionManager = (): ConnectionManager => {
+    return this.connectionManager;
   };
 
   /**
@@ -467,7 +359,7 @@ export class WebSocketStore {
   private emit = (event: string, data?: any): void => {
     const listeners = this.eventListeners.get(event);
     if (listeners) {
-      listeners.forEach(listener => {
+      listeners.forEach((listener) => {
         try {
           listener(data);
         } catch (error) {
@@ -490,11 +382,8 @@ export class WebSocketStore {
    * 销毁实例
    */
   destroy = (): void => {
-    this.disconnect();
-    this.clearTimers();
-    this.messageQueue = [];
+    this.connectionManager.destroy();
     this.eventListeners.clear();
-    
     this.log('WebSocketStore 已销毁');
   };
 }

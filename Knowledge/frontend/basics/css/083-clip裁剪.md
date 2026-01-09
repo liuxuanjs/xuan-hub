@@ -1,3 +1,10 @@
+---
+aliases: ["clip裁剪"]
+title: "clip裁剪"
+tags: ["CSS", "前端基础"]
+updated: 2026-01-09
+---
+
 ## 概述
 clip属性用于裁剪绝对定位元素，只显示元素的一部分。虽然clip已被废弃，但了解其原理和现代替代方案clip-path很重要。
 

@@ -1,3 +1,10 @@
+---
+aliases: ["line-height特殊性"]
+title: "line-height特殊性"
+tags: ["CSS", "前端基础"]
+updated: 2026-01-09
+---
+
 ## 概述
 line-height（行高）是CSS中控制文本行间距的重要属性，它有一些特殊的计算规则和表现形式，理解这些特性对文本排版很重要。
 

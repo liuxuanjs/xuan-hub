@@ -1,3 +1,10 @@
+---
+aliases: ["position属性值"]
+title: "position属性值"
+tags: ["CSS", "前端基础"]
+updated: 2026-01-09
+---
+
 ## 概述
 position属性指定了元素的定位类型，决定了元素在文档流中的表现方式。
 

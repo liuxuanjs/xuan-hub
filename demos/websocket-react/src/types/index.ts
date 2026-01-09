@@ -186,8 +186,11 @@ export interface ChatSidebarProps {
 }
 
 export interface MessageListProps {
-  messages: Message[];
+  messages: EnhancedMessage[];
   currentUser: string;
+  onLoadMore?: () => void;
+  isLoadingHistory?: boolean;
+  hasMoreHistory?: boolean;
 }
 
 export interface MessageInputProps {
@@ -295,4 +298,151 @@ export interface Environment {
   NODE_ENV: 'development' | 'production' | 'test';
   WEBSOCKET_URL?: string;
   DEBUG?: boolean;
+}
+
+// ============================================
+// 新增类型定义 - 深度重构优化
+// ============================================
+
+// 消息状态
+export enum MessageStatus {
+  PENDING = 'pending',     // 等待发送
+  SENDING = 'sending',     // 发送中
+  SENT = 'sent',           // 已发送
+  DELIVERED = 'delivered', // 已送达
+  READ = 'read',           // 已读
+  FAILED = 'failed',       // 发送失败
+}
+
+// 增强消息接口
+export interface EnhancedMessage extends Message {
+  /** 消息状态 */
+  status?: MessageStatus;
+  /** 回复的消息ID */
+  replyTo?: string;
+  /** 是否已删除 */
+  isDeleted?: boolean;
+  /** 删除时间 */
+  deletedAt?: number;
+  /** 是否已同步到服务器 */
+  synced?: boolean;
+  /** 会话ID */
+  conversationId?: string;
+  /** 本地消息ID（用于乐观更新） */
+  localId?: string;
+}
+
+// 连接状态（增强版）
+export type ConnectionState =
+  | 'DISCONNECTED'   // 未连接
+  | 'CONNECTING'     // 连接中
+  | 'CONNECTED'      // 已连接
+  | 'RECONNECTING'   // 重连中
+  | 'DISCONNECTING'  // 断开中
+  | 'FAILED';        // 连接失败
+
+// 增强连接信息
+export interface EnhancedConnectionInfo extends ConnectionInfo {
+  /** 连接状态 */
+  state: ConnectionState;
+  /** 待发送消息数 */
+  pendingMessages: number;
+  /** 失败消息数 */
+  failedMessages: number;
+  /** 网络是否在线 */
+  isOnline: boolean;
+}
+
+// 存储相关类型
+export interface StoredMessage extends EnhancedMessage {
+  conversationId: string;
+}
+
+export interface MessageSearchResult {
+  message: StoredMessage;
+  highlights: {
+    content?: string;
+    username?: string;
+  };
+}
+
+// 性能监控类型
+export interface PerformanceMetrics {
+  /** 渲染耗时 */
+  renderTime: number;
+  /** 消息处理耗时 */
+  messageProcessTime: number;
+  /** 存储操作耗时 */
+  storageTime: number;
+  /** 网络延迟 */
+  networkLatency: number;
+}
+
+// 批处理配置
+export interface BatchConfig {
+  /** 批处理间隔（毫秒） */
+  interval: number;
+  /** 最大批处理大小 */
+  maxSize: number;
+  /** 是否立即处理第一条 */
+  immediateFirst: boolean;
+}
+
+// 重连配置
+export interface ReconnectConfig {
+  /** 初始延迟（毫秒） */
+  initialDelay: number;
+  /** 最大延迟（毫秒） */
+  maxDelay: number;
+  /** 最大重试次数 */
+  maxRetries: number;
+  /** 退避乘数 */
+  multiplier: number;
+  /** 是否启用抖动 */
+  jitter: boolean;
+}
+
+// 消息持久化配置
+export interface StorageConfig {
+  /** 是否启用持久化 */
+  enabled: boolean;
+  /** 最大存储消息数 */
+  maxMessages: number;
+  /** 消息过期时间（毫秒） */
+  messageExpiry: number;
+  /** 是否启用自动清理 */
+  autoCleanup: boolean;
+}
+
+// 类型守卫
+export function isChatMessage(msg: WebSocketMessage): msg is ChatMessage {
+  return msg.type === 'message';
+}
+
+export function isSystemMessage(msg: WebSocketMessage): msg is SystemMessage {
+  return msg.type === 'system';
+}
+
+export function isUserActionMessage(msg: WebSocketMessage): msg is UserActionMessage {
+  return msg.type === 'join' || msg.type === 'leave';
+}
+
+export function isPingMessage(msg: any): msg is PingMessage {
+  return msg?.type === 'ping' && typeof msg.timestamp === 'number';
+}
+
+export function isPongMessage(msg: any): msg is PongMessage {
+  return msg?.type === 'pong' && typeof msg.timestamp === 'number';
+}
+
+export function isTypingMessage(msg: any): msg is TypingMessage {
+  return msg?.type === 'typing' && typeof msg.username === 'string';
+}
+
+export function isUserListMessage(msg: any): msg is UserListMessage {
+  return msg?.type === 'userList' && Array.isArray(msg.users);
+}
+
+export function isErrorMessage(msg: any): msg is ErrorMessage {
+  return msg?.type === 'error' && typeof msg.content === 'string';
 }

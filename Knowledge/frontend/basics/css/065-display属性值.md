@@ -1,3 +1,10 @@
+---
+aliases: ["display属性值"]
+title: "display属性值"
+tags: ["CSS", "前端基础"]
+updated: 2026-01-09
+---
+
 ## 概述
 display属性是CSS中最重要的属性之一，它决定了元素的显示类型和布局方式。
 

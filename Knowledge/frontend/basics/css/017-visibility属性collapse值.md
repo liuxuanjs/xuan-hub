@@ -1,3 +1,10 @@
+---
+aliases: ["visibility collapse", "collapse值"]
+title: "visibility 属性 collapse 值"
+tags: ["CSS", "visibility", "表格", "前端面试"]
+updated: 2026-01-10
+---
+
 ## 概述
 
 visibility 属性的 collapse 值是 CSS 中一个相对少见但功能独特的属性值。它主要针对表格相关元素设计，能够在隐藏元素的同时释放其占用的空间。理解 collapse 值的行为特点和浏览器兼容性差异，对于处理复杂的表格布局和动态显示隐藏需求具有重要意义。
@@ -262,8 +269,5 @@ if (supportsVisibilityCollapse()) {
 
 ## 参考资料
 
-[《CSS 里的 visibility 属性有个鲜为人知的属性值：collapse》](http://www.webhek.com/post/visibility-collapse.html)
-
-## 标签
-
-#CSS #前端面试
+- [CSS visibility collapse 详解](http://www.webhek.com/post/visibility-collapse.html)
+- [MDN - visibility](https://developer.mozilla.org/zh-CN/docs/Web/CSS/visibility)

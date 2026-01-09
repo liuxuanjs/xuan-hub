@@ -1,3 +1,10 @@
+---
+aliases: ["margin无效情况"]
+title: "margin无效情况"
+tags: ["CSS", "前端基础"]
+updated: 2026-01-09
+---
+
 ## 概述
 在CSS中，margin属性并不是在所有情况下都会生效。理解margin的无效情况有助于避免布局问题，正确使用margin属性。
 

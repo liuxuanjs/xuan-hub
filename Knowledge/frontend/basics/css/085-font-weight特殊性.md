@@ -1,3 +1,10 @@
+---
+aliases: ["font-weight特殊性"]
+title: "font-weight特殊性"
+tags: ["CSS", "前端基础"]
+updated: 2026-01-09
+---
+
 ## 概述
 font-weight属性控制字体的粗细程度，它有一些特殊的取值规则和表现形式，理解这些特性对于精确控制文字样式很重要。
 

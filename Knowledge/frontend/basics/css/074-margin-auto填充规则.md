@@ -1,3 +1,10 @@
+---
+aliases: ["margin-auto填充规则"]
+title: "margin-auto填充规则"
+tags: ["CSS", "前端基础"]
+updated: 2026-01-09
+---
+
 ## 概述
 `margin: auto` 是CSS中一个强大而灵活的特性，它可以自动分配可用空间，常用于元素居中和空间分配。理解其填充规则对于布局设计至关重要。
 

@@ -1,3 +1,10 @@
+---
+aliases: ["CSS Sprites"]
+title: "CSS Sprites"
+tags: ["CSS", "前端基础"]
+updated: 2026-01-09
+---
+
 ## 概述
 
 CSS Sprites（精灵图）是一种网页图像应用处理方式，通过将多个小图标合并成一张大图，然后使用CSS背景定位技术显示不同区域，从而减少HTTP请求数量，提升页面加载性能。
@@ -407,6 +414,3 @@ const Icon = styled.div`
 | 图片分割 | 简单直接 | 请求数多 | 小型项目 |
 
 虽然CSS Sprites在HTTP/2时代的重要性有所下降，但在特定场景下仍然是一种有效的优化手段。
-
-## 标签
-#CSS #前端面试

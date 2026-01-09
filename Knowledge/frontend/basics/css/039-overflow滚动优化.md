@@ -1,3 +1,10 @@
+---
+aliases: ["overflow滚动优化"]
+title: "overflow滚动优化"
+tags: ["CSS", "前端基础"]
+updated: 2026-01-09
+---
+
 ## 概述
 
 在移动端特别是iOS设备上，使用`overflow: scroll`创建的滚动区域经常出现卡顿现象。这主要是由于浏览器的滚动机制和硬件加速问题导致的，需要通过特定的CSS属性来优化。
@@ -282,6 +289,3 @@ function monitorScrollPerformance(element) {
 - **性能优化：** 结合transform和will-change优化渲染性能
 - **测试验证：** 在真实设备上测试滚动体验
 - **回退方案：** 为不支持的浏览器提供JavaScript增强
-
-## 标签
-#CSS #前端面试

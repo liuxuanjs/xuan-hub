@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useCallback } from 'react';
 import { observer } from 'mobx-react-lite';
 import styled from 'styled-components';
 import { useStores } from '@/stores/RootStore';
@@ -14,16 +14,13 @@ const ChatContainer = styled.div`
   flex-direction: column;
   height: 100%;
   overflow: hidden;
+  background: #313338;
 `;
 
 const ChatMain = styled.div`
   flex: 1;
   display: flex;
   min-height: 0;
-
-  @media (max-width: 768px) {
-    flex-direction: column;
-  }
 `;
 
 const ChatArea = styled.div`
@@ -31,57 +28,54 @@ const ChatArea = styled.div`
   display: flex;
   flex-direction: column;
   min-height: 0;
+  min-width: 0;
 `;
 
 const ChatRoom: React.FC<ChatRoomProps> = observer(({ user, serverUrl, onLogout }) => {
-  const { 
-    chatStore, 
-    webSocketStore, 
-    sendMessage, 
+  const {
+    chatStore,
+    webSocketStore,
+    sendMessage,
     sendTyping,
-    testConnection, 
+    testConnection,
     clearMessages,
-    connectionStatusText 
+    connectionStatusText
   } = useStores();
 
-  // 组件卸载时清理
-  useEffect(() => {
-    return () => {
-      // 组件卸载时不需要特殊清理，因为在 logout 时已经处理
-    };
-  }, []);
+  const handleLoadMore = useCallback((): void => {
+    chatStore.loadHistory();
+  }, [chatStore]);
 
-  // 发送聊天消息
-  const handleSendMessage = (content: string): void => {
+  const handleSendMessage = useCallback((content: string): void => {
     if (!content.trim()) return;
     sendMessage(content);
-  };
+  }, [sendMessage]);
 
-  // 处理输入状态
-  const handleTypingChange = (isTyping: boolean): void => {
+  const handleTypingChange = useCallback((isTyping: boolean): void => {
     chatStore.setTyping(isTyping);
     sendTyping(isTyping);
-  };
+  }, [chatStore, sendTyping]);
 
-  // 断开连接
-  const handleDisconnect = (): void => {
+  const handleDisconnect = useCallback((): void => {
     onLogout();
-  };
+  }, [onLogout]);
 
-  // 测试连接
-  const handleTestConnection = (): void => {
+  const handleTestConnection = useCallback((): void => {
     testConnection();
-  };
+  }, [testConnection]);
 
-  // 清空消息
-  const handleClearMessages = (): void => {
+  const handleClearMessages = useCallback((): void => {
     clearMessages();
-  };
+  }, [clearMessages]);
 
-  // 移除通知
-  const handleRemoveNotification = (id: string): void => {
+  const handleRemoveNotification = useCallback((id: string): void => {
     chatStore.removeNotification(id);
-  };
+  }, [chatStore]);
+
+  const handleRetryMessage = useCallback((messageId: string): void => {
+    // TODO: 实现消息重试逻辑
+    chatStore.showNotification('消息重试功能开发中', 'info');
+  }, [chatStore]);
 
   return (
     <ChatContainer>
@@ -91,7 +85,7 @@ const ChatRoom: React.FC<ChatRoomProps> = observer(({ user, serverUrl, onLogout 
         isConnected={webSocketStore.isConnected}
         onDisconnect={handleDisconnect}
       />
-      
+
       <ChatMain>
         <ChatSidebar
           users={chatStore.users}
@@ -101,23 +95,27 @@ const ChatRoom: React.FC<ChatRoomProps> = observer(({ user, serverUrl, onLogout 
           onClearMessages={handleClearMessages}
           onTestConnection={handleTestConnection}
         />
-        
+
         <ChatArea>
           <MessageList
             messages={chatStore.messages}
             currentUser={user}
+            onLoadMore={handleLoadMore}
+            onRetry={handleRetryMessage}
+            isLoadingHistory={chatStore.isLoadingHistory}
+            hasMoreHistory={chatStore.hasMoreHistory}
           />
-          
+
           <MessageInput
             onSendMessage={handleSendMessage}
             onTypingChange={handleTypingChange}
             disabled={!webSocketStore.isConnected}
             placeholder={
-              webSocketStore.isConnected 
-                ? "输入消息..." 
-                : webSocketStore.isConnecting 
-                  ? "连接中..." 
-                  : "未连接"
+              webSocketStore.isConnected
+                ? '输入消息...'
+                : webSocketStore.isConnecting
+                  ? '连接中...'
+                  : '未连接'
             }
             maxLength={500}
           />

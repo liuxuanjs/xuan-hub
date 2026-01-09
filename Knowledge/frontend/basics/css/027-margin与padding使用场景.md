@@ -1,3 +1,10 @@
+---
+aliases: ["margin与padding使用场景"]
+title: "margin与padding使用场景"
+tags: ["CSS", "前端基础"]
+updated: 2026-01-09
+---
+
 ## 概述
 
 margin和padding是CSS盒模型中控制空间距离的两个重要属性，了解它们的不同作用和使用场景有助于更好地进行页面布局。
@@ -105,6 +112,3 @@ margin和padding是CSS盒模型中控制空间距离的两个重要属性，了�
     margin-bottom: 0;    /* 最后一个卡片无下边距 */
 }
 ```
-
-## 标签
-#CSS #前端面试

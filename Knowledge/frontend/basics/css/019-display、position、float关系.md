@@ -1,3 +1,10 @@
+---
+aliases: ["display position float", "三大布局属性"]
+title: "display、position、float 关系"
+tags: ["CSS", "布局", "定位", "浮动", "前端面试"]
+updated: 2026-01-10
+---
+
 ## 概述
 
 display、position 和 float 是 CSS 中三个核心的布局属性，它们之间存在复杂的相互作用关系。理解这些属性的优先级和相互影响机制，对于掌握 CSS 布局原理、避免样式冲突、实现精确的页面布局具有重要意义。这些属性的组合使用遵循特定的计算规则和优先级顺序。
@@ -378,8 +385,5 @@ element.style.cssText = "display: block; position: absolute; left: 100px;";
 
 ## 参考资料
 
-[《position 跟 display、margincollapse、overflow、float 这些特性相互叠加后会怎么样？》](https://www.cnblogs.com/jackyWHJ/p/3756087.html)
-
-## 标签
-
-#CSS #前端面试 
+- [position 与 display、float 的关系](https://www.cnblogs.com/jackyWHJ/p/3756087.html)
+- [MDN - 视觉格式化模型](https://developer.mozilla.org/zh-CN/docs/Web/CSS/Visual_formatting_model)

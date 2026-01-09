@@ -1,3 +1,10 @@
+---
+aliases: ["CSS Grid布局"]
+title: "CSS Grid布局"
+tags: ["CSS", "前端基础"]
+updated: 2026-01-09
+---
+
 ## 概述
 CSS Grid是二维布局系统，可以同时控制行和列，比Flexbox更适合复杂的网格布局。它是现代CSS布局的重要工具。
 

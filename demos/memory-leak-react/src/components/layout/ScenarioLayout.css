@@ -1,0 +1,122 @@
+.scenario-layout {
+  max-width: none;
+  padding: 0;
+  animation: fadeIn 0.3s ease;
+}
+
+.scenario-layout__content {
+  display: grid;
+  grid-template-columns: 1fr 360px;
+  gap: 24px;
+  padding: 0 24px 24px;
+}
+
+.scenario-layout__main {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.scenario-layout__sidebar {
+  background: var(--bg-secondary);
+  padding: 20px;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border-color);
+  height: fit-content;
+  position: sticky;
+  top: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* 通用 section 样式 */
+.demo-section {
+  background: var(--bg-secondary);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border-color);
+  padding: 20px;
+  animation: slideUp 0.3s ease;
+}
+
+.demo-section h2 {
+  margin: 0 0 16px 0;
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.demo-container {
+  background: var(--bg-tertiary);
+  border-radius: var(--radius-md);
+  padding: 16px;
+}
+
+/* 空状态 */
+.empty-state {
+  text-align: center;
+  padding: 32px 16px;
+  color: var(--text-muted);
+}
+
+.empty-state p {
+  margin: 4px 0;
+  font-size: 14px;
+}
+
+/* Demo info */
+.demo-info {
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid var(--border-color);
+}
+
+.demo-info h4 {
+  margin: 0 0 12px 0;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.demo-info ol,
+.demo-info ul {
+  margin: 0;
+  padding-left: 20px;
+  color: var(--text-secondary);
+}
+
+.demo-info li {
+  margin-bottom: 8px;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.demo-info li strong {
+  color: var(--text-primary);
+}
+
+/* 响应式 */
+@media (max-width: 1200px) {
+  .scenario-layout__content {
+    grid-template-columns: 1fr;
+  }
+
+  .scenario-layout__sidebar {
+    position: static;
+  }
+}
+
+@media (max-width: 768px) {
+  .scenario-layout__content {
+    padding: 0 16px 16px;
+    gap: 16px;
+  }
+
+  .demo-section {
+    padding: 16px;
+  }
+}

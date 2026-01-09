@@ -1,3 +1,10 @@
+---
+aliases: ["viewport概念"]
+title: "viewport概念"
+tags: ["CSS", "前端基础"]
+updated: 2026-01-09
+---
+
 ## 概述
 
 Viewport（视口）是移动端web开发的核心概念，它决定了网页在移动设备上的显示方式。理解三种不同的viewport对于实现良好的移动端体验至关重要。
@@ -281,6 +288,3 @@ function handleIOSViewport() {
 - 在真实设备上验证效果
 - 注意横竖屏切换的表现
 - 测试不同浏览器的兼容性
-
-## 标签
-#CSS #前端面试

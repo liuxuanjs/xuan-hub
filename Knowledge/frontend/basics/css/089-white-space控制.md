@@ -1,3 +1,10 @@
+---
+aliases: ["white-space控制"]
+title: "white-space控制"
+tags: ["CSS", "前端基础"]
+updated: 2026-01-09
+---
+
 ## 概述
 white-space属性控制元素内空白字符的处理方式，包括空格、制表符、换行符等。理解这个属性对文本排版很重要。
 

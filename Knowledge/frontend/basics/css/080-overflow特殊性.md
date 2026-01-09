@@ -1,3 +1,10 @@
+---
+aliases: ["overflow特殊性"]
+title: "overflow特殊性"
+tags: ["CSS", "前端基础"]
+updated: 2026-01-09
+---
+
 # overflow特殊性
 
 ## 概述

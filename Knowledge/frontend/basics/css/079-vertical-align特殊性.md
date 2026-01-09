@@ -1,3 +1,10 @@
+---
+aliases: ["vertical-align特殊性"]
+title: "vertical-align特殊性"
+tags: ["CSS", "前端基础"]
+updated: 2026-01-09
+---
+
 ## 概述
 vertical-align是CSS中最容易被误解的属性之一，它只对内联元素和表格单元格有效，主要用于控制元素的垂直对齐方式。
 

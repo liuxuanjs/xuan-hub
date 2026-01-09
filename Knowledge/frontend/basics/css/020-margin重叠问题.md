@@ -1,3 +1,10 @@
+---
+aliases: ["margin重叠", "margin合并", "外边距折叠"]
+title: "margin 重叠问题"
+tags: ["CSS", "布局", "margin", "前端面试"]
+updated: 2026-01-10
+---
+
 ## 概述
 
 margin 重叠（也叫 margin 合并）是指在垂直方向上，相邻块级元素的外边距会合并为单个外边距的现象。理解 margin 重叠机制有助于我们更好地控制页面布局。
@@ -103,6 +110,7 @@ margin 重叠（也叫 margin 合并）是指在垂直方向上，相邻块级�
 
 **使用场景：** 简单场景，不改变布局上下文
 
-## 标签
+## 参考资料
 
-#CSS #前端面试 
+- [MDN - 外边距重叠](https://developer.mozilla.org/zh-CN/docs/Web/CSS/CSS_box_model/Mastering_margin_collapsing)
+- [CSS Tricks - 外边距合并](https://css-tricks.com/what-you-should-know-about-collapsing-margins/)

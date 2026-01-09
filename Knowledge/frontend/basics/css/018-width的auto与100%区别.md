@@ -1,3 +1,10 @@
+---
+aliases: ["width auto vs 100%", "宽度auto与100%"]
+title: "width 的 auto 与 100% 区别"
+tags: ["CSS", "宽度", "盒模型", "前端面试"]
+updated: 2026-01-10
+---
+
 ## 概述
 
 width: auto 和 width: 100% 是 CSS 中两种不同的宽度设置方式，它们在盒模型计算和空间分配上存在重要区别。理解这两种设置的差异对于掌握 CSS 布局原理、避免布局问题具有重要意义。正确使用这两个值能够帮助开发者实现更灵活和健壮的布局效果。
@@ -320,6 +327,7 @@ console.log("clientWidth:", element.clientWidth); // 不含边框
 console.log("scrollWidth:", element.scrollWidth); // 内容宽度
 ```
 
-## 标签
+## 参考资料
 
-#CSS #前端面试 
+- [MDN - width](https://developer.mozilla.org/zh-CN/docs/Web/CSS/width)
+- [CSS Tricks - width auto vs 100%](https://css-tricks.com/box-sizing/)

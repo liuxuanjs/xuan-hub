@@ -1,3 +1,10 @@
+---
+aliases: ["text-indent特殊性"]
+title: "text-indent特殊性"
+tags: ["CSS", "前端基础"]
+updated: 2026-01-09
+---
+
 ## 概述
 text-indent属性用于设置文本首行缩进，它有一些特殊的表现和应用技巧，在文本排版和元素隐藏方面都很有用。
 

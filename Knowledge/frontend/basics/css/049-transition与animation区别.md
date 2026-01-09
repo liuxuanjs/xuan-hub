@@ -1,3 +1,10 @@
+---
+aliases: ["transition与animation区别"]
+title: "transition与animation区别"
+tags: ["CSS", "前端基础"]
+updated: 2026-01-09
+---
+
 ## 概述
 
 `transition`和`animation`是CSS3中实现动画效果的两种主要方式，它们各有特点和适用场景。理解两者的区别有助于选择合适的动画实现方案。

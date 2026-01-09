@@ -1,0 +1,85 @@
+.console {
+  background: var(--bg-tertiary);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  border: 1px solid var(--border-color);
+}
+
+.console__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 14px;
+  background: var(--bg-modifier);
+  border-bottom: 1px solid var(--border-color);
+}
+
+.console__title {
+  margin: 0;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.console__clear-btn {
+  padding: 4px 10px;
+  font-size: 11px;
+  background: var(--bg-accent);
+  color: var(--text-secondary);
+  border-radius: var(--radius-sm);
+}
+
+.console__clear-btn:hover {
+  background: var(--border-light);
+  color: var(--text-primary);
+}
+
+.console__body {
+  height: 180px;
+  overflow-y: auto;
+  background: #0d1117;
+  font-family: 'JetBrains Mono', 'Fira Code', 'Monaco', monospace;
+  font-size: 12px;
+  padding: 12px;
+}
+
+.console__empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  color: var(--text-muted);
+  font-size: 12px;
+}
+
+.console__log {
+  padding: 3px 0;
+  line-height: 1.5;
+  word-break: break-all;
+  display: flex;
+  gap: 8px;
+}
+
+.console__log-time {
+  color: #6e7681;
+  flex-shrink: 0;
+}
+
+.console__log-message {
+  color: #c9d1d9;
+}
+
+.console__log--success .console__log-message {
+  color: var(--color-success);
+}
+
+.console__log--error .console__log-message {
+  color: var(--color-error);
+}
+
+.console__log--warning .console__log-message {
+  color: var(--color-warning);
+}

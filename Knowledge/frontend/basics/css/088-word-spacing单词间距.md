@@ -1,3 +1,10 @@
+---
+aliases: ["word-spacing单词间距"]
+title: "word-spacing单词间距"
+tags: ["CSS", "前端基础"]
+updated: 2026-01-09
+---
+
 ## 概述
 word-spacing属性控制单词之间的间距，主要影响英文等以空格分隔单词的文本。理解其特性有助于优化文本排版效果。
 

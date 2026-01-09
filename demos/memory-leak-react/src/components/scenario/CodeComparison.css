@@ -1,0 +1,134 @@
+.code-comparison {
+  background: var(--bg-secondary);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border-color);
+  overflow: hidden;
+}
+
+.code-comparison__header {
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--border-color);
+  background: var(--bg-tertiary);
+}
+
+.code-comparison__header h2 {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.code-comparison__container {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  gap: 0;
+  min-height: 360px;
+}
+
+.code-comparison__panel {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.code-comparison__panel-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  font-weight: 600;
+  font-size: 13px;
+}
+
+.code-comparison__panel--problem .code-comparison__panel-header {
+  background: var(--color-error-light);
+  color: var(--color-error);
+}
+
+.code-comparison__panel--solution .code-comparison__panel-header {
+  background: var(--color-success-light);
+  color: var(--color-success);
+}
+
+.code-comparison__icon {
+  font-size: 14px;
+}
+
+.code-comparison__title {
+  font-size: 13px;
+}
+
+.code-comparison__content {
+  flex: 1;
+  overflow: auto;
+  background: #0d1117;
+}
+
+.code-comparison__code {
+  margin: 0;
+  padding: 16px;
+  font-family: 'JetBrains Mono', 'Fira Code', 'Monaco', 'Consolas', monospace;
+  font-size: 12px;
+  line-height: 1.6;
+  color: #c9d1d9;
+  white-space: pre;
+  overflow-x: auto;
+}
+
+.code-comparison__divider {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 0 6px;
+  background: var(--bg-tertiary);
+  min-width: 36px;
+}
+
+.code-comparison__divider-line {
+  flex: 1;
+  width: 2px;
+  background: linear-gradient(180deg, var(--border-color), var(--border-light), var(--border-color));
+}
+
+.code-comparison__divider-arrow {
+  padding: 10px 0;
+  color: var(--text-muted);
+  font-size: 16px;
+  font-weight: bold;
+}
+
+/* 响应式 */
+@media (max-width: 1200px) {
+  .code-comparison__container {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto auto;
+  }
+
+  .code-comparison__divider {
+    flex-direction: row;
+    padding: 6px 16px;
+    min-width: auto;
+  }
+
+  .code-comparison__divider-line {
+    flex: 1;
+    width: auto;
+    height: 2px;
+  }
+
+  .code-comparison__divider-arrow {
+    padding: 0 10px;
+    transform: rotate(90deg);
+  }
+}
+
+@media (max-width: 768px) {
+  .code-comparison__code {
+    font-size: 11px;
+    padding: 12px;
+  }
+}
