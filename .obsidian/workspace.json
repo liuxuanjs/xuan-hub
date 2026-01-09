@@ -85,7 +85,7 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Knowledge/backend/nginx/ai-logs/cursor_docker_compose_shopify_yml_ngin.md",
+                "file": "knowledge/frontend/basics/css/099-上下固定中间自适应.md",
                 "mode": "source",
                 "source": false,
                 "backlinks": true,
@@ -100,7 +100,7 @@
                 }
               },
               "icon": "lucide-file",
-              "title": "cursor_docker_compose_shopify_yml_ngin"
+              "title": "099-上下固定中间自适应"
             }
           }
         ],
@@ -177,13 +177,13 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "Knowledge/backend/nginx/ai-logs/cursor_docker_compose_shopify_yml_ngin.md",
+                "file": "knowledge/frontend/basics/css/099-上下固定中间自适应.md",
                 "followCursor": false,
                 "showSearch": false,
                 "searchQuery": ""
               },
               "icon": "lucide-list",
-              "title": "cursor_docker_compose_shopify_yml_ngin 的大纲"
+              "title": "099-上下固定中间自适应 的大纲"
             }
           },
           {
@@ -263,6 +263,25 @@
   },
   "active": "5e922524ee2caf5a",
   "lastOpenFiles": [
+    "CLAUDE.md",
+    "knowledge/frontend/basics/css/101-三栏布局.md",
+    "knowledge/frontend/basics/css/100-两栏布局.md",
+    "knowledge/frontend/basics/css/102-自适应正方形.md",
+    "knowledge/frontend/basics/css/103-CSS创建三角形.md",
+    "knowledge/frontend/basics/css/104-自适应矩形居中.md",
+    "knowledge/frontend/basics/css/063-CSS3新增伪类.md",
+    "knowledge/frontend/basics/css/002-CSS-选择符.md",
+    "knowledge/frontend/basics/css/007-CSS伪类LVHA.md",
+    "knowledge/frontend/basics/css/014-CSS多列等高.md",
+    "knowledge/frontend/basics/css/011-Flexbox弹性布局.md",
+    "knowledge/frontend/basics/css/005-CSS中哪些属性可以继承.md",
+    "personal/life/TODO清单.md",
+    "personal/career/追忆的简历.md",
+    "resources/DIY电脑配置.md",
+    "resources/对公司有哪些具体的期望和建议.md",
+    "resources/创业规划.md",
+    "tools/中国用户如何购买Claude或者ChatGPT.md",
+    "work/projects/index.md",
     "Life/TODO清单.md",
     "Life/index.md",
     "Tools/cursor/rules/react-patterns.md",
@@ -270,25 +289,6 @@
     "Tools/cursor/rules/accessibility.md",
     "Tools/cursor/Claude Code 开发工作流指南.md",
     "Tools/cursor/Cursor Rules 配置指南.md",
-    "Tools/中国用户如何购买Claude或者ChatGPT.md",
-    "Tools/Chrome浏览器断点调试无法进入node_modules.md",
-    "Tools/macOS安装Homebrew.md",
-    "Work/shuyun/查看服务debug.json.md",
-    "Work/shuyun/查询项目问题的必要条件.md",
-    "Work/shuyun/绩效自评.md",
-    "Work/shuyun/数云服务.md",
-    "Work/team/工具包架构设计方案.md",
-    "Work/team/环境变量统一管理规范.md",
-    "Work/team/生产环境移除Console配置.md",
-    "Work/team/业务组件库架构设计.md",
-    "Work/team/未命名.md",
-    "Work/team/雪山之巅前端工程.md",
-    "Work/team/雪山之巅前端TODO清单.md",
-    "Work/team/ESLint与TypeScript规范 - 团队实施指南.md",
-    "Work/team/Git提交规范与Hooks - 团队实施指南.md",
-    "Work/team/Node版本与包管理器规范 - 团队实施指南.md",
-    "追忆的简历.md",
-    "Work/xuanshan/小程序配置.md",
     "Work/team/Node版本与包管理器规范 - 团队实施指南.md.tmp.209.1765983288241",
     "Work/team/Node版本与包管理器规范 - 团队实施指南.md.tmp.209.1765983211904",
     "assets/attachments/Pasted image 20251107121127.png",

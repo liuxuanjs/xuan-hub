@@ -1,4 +1,3 @@
-
 ---
 aliases: ["React 18", "并发渲染", "Concurrent Features", "自动批处理"]
 title: "React 18 新特性"
