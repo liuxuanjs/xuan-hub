@@ -4,7 +4,6 @@ import type {
   WebSocketReadyState,
   WebSocketOptions,
   ConnectionInfo as LegacyConnectionInfo,
-  PingMessage,
   ConnectionState,
 } from '@/types';
 
@@ -90,18 +89,7 @@ export class WebSocketStore {
     // 设置事件监听
     this.setupConnectionManagerListeners();
 
-    makeAutoObservable(this, {
-      // 排除私有字段
-      connectionManager: false,
-      options: false,
-      eventListeners: false,
-      // 排除私有方法
-      setupConnectionManagerListeners: false,
-      mapStateToReadyState: false,
-      updateConnectionInfo: false,
-      emit: false,
-      log: false,
-    }, { autoBind: true });
+    makeAutoObservable(this, {}, { autoBind: true });
   }
 
   /**
@@ -284,7 +272,7 @@ export class WebSocketStore {
    * 发送消息
    */
   sendMessage = (data: any): boolean => {
-    const messageId = this.connectionManager.send(data);
+    this.connectionManager.send(data);
     const success = this.connectionManager.isConnected();
 
     this.log(success ? '发送消息:' : '消息已加入队列:', data);

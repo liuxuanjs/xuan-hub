@@ -104,28 +104,20 @@ const MessageInput: React.FC<MessageInputProps> = observer(({
   const isOverLimit = message.length > maxLength;
   const canSend = message.trim().length > 0 && !disabled && !isOverLimit;
 
-  const handleSubmit = useCallback((e?: React.FormEvent): void => {
-    e?.preventDefault();
-    if (canSend) {
-      onSendMessage(message.trim());
-      setMessage('');
-      stopTyping();
-
-      // Reset textarea height
-      if (textareaRef.current) {
-        textareaRef.current.style.height = 'auto';
-        textareaRef.current.focus();
-      }
+  // 停止输入状态（先定义，被其他函数依赖）
+  const stopTyping = useCallback((): void => {
+    if (isTyping && onTypingChange) {
+      setIsTyping(false);
+      onTypingChange(false);
     }
-  }, [canSend, message, onSendMessage]);
 
-  const handleKeyDown = useCallback((e: React.KeyboardEvent): void => {
-    if (e.key === 'Enter' && !e.shiftKey) {
-      e.preventDefault();
-      handleSubmit();
+    if (typingTimeoutRef.current) {
+      clearTimeout(typingTimeoutRef.current);
+      typingTimeoutRef.current = null;
     }
-  }, [handleSubmit]);
+  }, [isTyping, onTypingChange]);
 
+  // 开始输入状态（依赖 stopTyping）
   const startTyping = useCallback((): void => {
     if (!isTyping && onTypingChange) {
       setIsTyping(true);
@@ -139,20 +131,33 @@ const MessageInput: React.FC<MessageInputProps> = observer(({
     typingTimeoutRef.current = setTimeout(() => {
       stopTyping();
     }, 1000);
-  }, [isTyping, onTypingChange]);
+  }, [isTyping, onTypingChange, stopTyping]);
 
-  const stopTyping = useCallback((): void => {
-    if (isTyping && onTypingChange) {
-      setIsTyping(false);
-      onTypingChange(false);
+  // 提交消息（依赖 stopTyping）
+  const handleSubmit = useCallback((e?: React.FormEvent): void => {
+    e?.preventDefault();
+    if (canSend) {
+      onSendMessage(message.trim());
+      setMessage('');
+      stopTyping();
+
+      // Reset textarea height
+      if (textareaRef.current) {
+        textareaRef.current.style.height = 'auto';
+        textareaRef.current.focus();
+      }
     }
+  }, [canSend, message, onSendMessage, stopTyping]);
 
-    if (typingTimeoutRef.current) {
-      clearTimeout(typingTimeoutRef.current);
-      typingTimeoutRef.current = null;
+  // 处理键盘事件（依赖 handleSubmit）
+  const handleKeyDown = useCallback((e: React.KeyboardEvent): void => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      handleSubmit();
     }
-  }, [isTyping, onTypingChange]);
+  }, [handleSubmit]);
 
+  // 处理输入变化（依赖 startTyping, stopTyping）
   const handleChange = useCallback((e: React.ChangeEvent<HTMLTextAreaElement>): void => {
     const value = e.target.value;
     setMessage(value);

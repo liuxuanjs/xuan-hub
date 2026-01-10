@@ -3,9 +3,9 @@
  * 核心连接层，框架无关，负责管理 WebSocket 连接的完整生命周期
  */
 
-import { ConnectionStateMachine, ConnectionState, ConnectionEvent } from './ConnectionStateMachine';
+import { ConnectionStateMachine, ConnectionState } from './ConnectionStateMachine';
 import { ReconnectStrategy, ReconnectOptions } from './ReconnectStrategy';
-import { MessageRetryQueue, QueuedMessage, MessageRetryOptions } from './MessageRetryQueue';
+import { MessageRetryQueue, MessageRetryOptions } from './MessageRetryQueue';
 
 export interface ConnectionManagerOptions {
   /** 重连配置 */
@@ -34,8 +34,8 @@ export interface ConnectionInfo {
   latency: number;
   pendingMessages: number;
   failedMessages: number;
-  lastConnectedAt?: number;
-  lastDisconnectedAt?: number;
+  lastConnectedAt?: number | undefined;
+  lastDisconnectedAt?: number | undefined;
   isOnline: boolean;
 }
 
@@ -129,9 +129,15 @@ export class ConnectionManager {
 
   /**
    * 断开连接
+   * @param code 关闭码
+   * @param reason 关闭原因
+   * @param disableReconnect 是否禁用自动重连（默认 true）
    */
-  disconnect(code = 1000, reason = '主动断开'): void {
-    this.options.enableAutoReconnect = false;
+  disconnect(code = 1000, reason = '主动断开', disableReconnect = true): void {
+    // 临时禁用重连
+    if (disableReconnect) {
+      this.options.enableAutoReconnect = false;
+    }
     this.reconnectStrategy.cancelReconnect();
     this.stopHeartbeat();
 
@@ -385,7 +391,7 @@ export class ConnectionManager {
    * 生成消息 ID
    */
   private generateMessageId(): string {
-    return `msg_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+    return `msg_${Date.now()}_${Math.random().toString(36).substring(2, 11)}`;
   }
 
   /**

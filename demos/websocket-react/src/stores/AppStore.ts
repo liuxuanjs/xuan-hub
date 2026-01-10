@@ -45,12 +45,6 @@ export class AppStore {
     makeAutoObservable(this, {
       // 排除配置（不需要响应式）
       config: false,
-      // 排除私有方法
-      loadFromStorage: false,
-      saveToStorage: false,
-      validateLoginData: false,
-      isValidWebSocketUrl: false,
-      log: false,
     }, { autoBind: true });
     this.loadFromStorage();
   }

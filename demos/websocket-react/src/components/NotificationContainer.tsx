@@ -4,6 +4,19 @@ import styled, { keyframes } from 'styled-components';
 import type { NotificationContainerProps, Notification, NotificationLevel } from '@/types';
 import { Check, AlertCircle, Info, X } from './common/Icons';
 
+/**
+ * 根据通知级别获取对应颜色
+ */
+const getNotificationColor = (type: NotificationLevel): string => {
+  switch (type) {
+    case 'success': return '#23A55A';
+    case 'error': return '#ED4245';
+    case 'warning': return '#F0B232';
+    case 'info':
+    default: return '#5865F2';
+  }
+};
+
 const slideIn = keyframes`
   from {
     opacity: 0;
@@ -37,15 +50,7 @@ const NotificationItem = styled.div<{ $type: NotificationLevel }>`
   border-radius: 4px;
   padding: 12px 16px;
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
-  border-left: 3px solid ${props => {
-    switch (props.$type) {
-      case 'success': return '#23A55A';
-      case 'error': return '#ED4245';
-      case 'warning': return '#F0B232';
-      case 'info': return '#5865F2';
-      default: return '#5865F2';
-    }
-  }};
+  border-left: 3px solid ${props => getNotificationColor(props.$type)};
   animation: ${slideIn} 0.2s ease-out;
   max-width: 320px;
   pointer-events: auto;
@@ -67,15 +72,7 @@ const NotificationItem = styled.div<{ $type: NotificationLevel }>`
 
 const IconWrapper = styled.div<{ $type: NotificationLevel }>`
   flex-shrink: 0;
-  color: ${props => {
-    switch (props.$type) {
-      case 'success': return '#23A55A';
-      case 'error': return '#ED4245';
-      case 'warning': return '#F0B232';
-      case 'info': return '#5865F2';
-      default: return '#5865F2';
-    }
-  }};
+  color: ${props => getNotificationColor(props.$type)};
   display: flex;
 `;
 
@@ -121,15 +118,7 @@ const ProgressBar = styled.div<{ $type: NotificationLevel; $duration: number }>`
   left: 0;
   right: 0;
   height: 2px;
-  background: ${props => {
-    switch (props.$type) {
-      case 'success': return '#23A55A';
-      case 'error': return '#ED4245';
-      case 'warning': return '#F0B232';
-      case 'info': return '#5865F2';
-      default: return '#5865F2';
-    }
-  }};
+  background: ${props => getNotificationColor(props.$type)};
   border-radius: 0 0 4px 0;
   animation: progressBar ${props => props.$duration}ms linear;
   transform-origin: left;

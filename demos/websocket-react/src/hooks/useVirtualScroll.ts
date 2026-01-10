@@ -3,7 +3,7 @@
  * 用于优化大量消息列表的渲染性能
  */
 
-import { useState, useEffect, useRef, useCallback, useMemo } from 'react';
+import { useState, useEffect, useRef, useCallback, useMemo, useLayoutEffect } from 'react';
 
 export interface VirtualScrollOptions {
   /** 容器高度 */
@@ -55,7 +55,17 @@ export function useVirtualScroll<T>(
   items: T[],
   options: Partial<VirtualScrollOptions> = {}
 ): VirtualScrollResult<T> {
-  const opts = useMemo(() => ({ ...DEFAULT_OPTIONS, ...options }), [options]);
+  const {
+    containerHeight = DEFAULT_OPTIONS.containerHeight,
+    itemHeight = DEFAULT_OPTIONS.itemHeight,
+    overscan = DEFAULT_OPTIONS.overscan,
+    dynamicHeight = DEFAULT_OPTIONS.dynamicHeight,
+  } = options;
+
+  const opts = useMemo(
+    () => ({ containerHeight, itemHeight, overscan, dynamicHeight }),
+    [containerHeight, itemHeight, overscan, dynamicHeight]
+  );
 
   const containerRef = useRef<HTMLDivElement>(null);
   const [scrollTop, setScrollTop] = useState(0);
@@ -243,12 +253,12 @@ export function useItemHeight(
   ref: React.RefObject<HTMLDivElement>,
   heightMap: React.MutableRefObject<Map<number, number>>
 ): void {
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (ref.current) {
       const height = ref.current.getBoundingClientRect().height;
       if (heightMap.current.get(index) !== height) {
         heightMap.current.set(index, height);
       }
     }
-  });
+  }, [index, ref, heightMap]);
 }

@@ -2,19 +2,19 @@ import { makeAutoObservable, runInAction } from 'mobx';
 import { v4 as uuidv4 } from 'uuid';
 import { indexedDBManager, IDBMessage } from '@/core/storage';
 import { MessageBatcher } from '@/utils/MessageBatcher';
-import type {
-  Message,
-  User,
-  Notification,
-  ChatMessage,
-  SystemMessage,
-  UserActionMessage,
-  UserListMessage,
-  NotificationMessage,
-  WebSocketMessage,
-  NotificationLevel,
+import {
   MessageStatus,
-  EnhancedMessage,
+  type Message,
+  type User,
+  type Notification,
+  type ChatMessage,
+  type SystemMessage,
+  type UserActionMessage,
+  type UserListMessage,
+  type NotificationMessage,
+  type WebSocketMessage,
+  type NotificationLevel,
+  type EnhancedMessage,
 } from '@/types';
 
 // 默认会话 ID
@@ -82,26 +82,7 @@ export class ChatStore {
       }
     );
 
-    makeAutoObservable(this, {
-      // 排除私有字段
-      storageInitialized: false,
-      messageBatcher: false,
-      storageEnabled: false,
-      typingTimeouts: false,
-      notificationTimeouts: false,
-      // 排除私有方法
-      initStorage: false,
-      handleChatMessage: false,
-      handleUserJoin: false,
-      handleUserLeave: false,
-      handleUserList: false,
-      handleNotificationMessage: false,
-      handleSystemMessage: false,
-      handleTypingMessage: false,
-      handleErrorMessage: false,
-      batchAddMessages: false,
-      log: false,
-    }, { autoBind: true });
+    makeAutoObservable(this, {}, { autoBind: true });
 
     // 初始化存储
     this.initStorage();

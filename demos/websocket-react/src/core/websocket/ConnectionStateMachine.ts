@@ -67,7 +67,7 @@ export type StateChangeCallback = (
 export class ConnectionStateMachine {
   private currentState: ConnectionState = 'DISCONNECTED';
   private listeners: Set<StateChangeCallback> = new Set();
-  private stateHistory: Array<{ state: ConnectionState; timestamp: number; event?: ConnectionEvent }> = [];
+  private stateHistory: Array<{ state: ConnectionState; timestamp: number; event?: ConnectionEvent | undefined }> = [];
   private maxHistoryLength = 50;
 
   constructor(initialState: ConnectionState = 'DISCONNECTED') {
@@ -141,7 +141,7 @@ export class ConnectionStateMachine {
   /**
    * 获取状态历史
    */
-  getHistory(): Array<{ state: ConnectionState; timestamp: number; event?: ConnectionEvent }> {
+  getHistory(): Array<{ state: ConnectionState; timestamp: number; event?: ConnectionEvent | undefined }> {
     return [...this.stateHistory];
   }
 

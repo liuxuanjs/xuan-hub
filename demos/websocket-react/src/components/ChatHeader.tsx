@@ -4,16 +4,40 @@ import styled from 'styled-components';
 import type { ChatHeaderProps } from '@/types';
 import { Hash, Wifi, WifiOff, LogOut, User, Circle } from './common/Icons';
 
+type ConnectionStatusType = 'online' | 'connecting' | 'offline';
+
 /**
  * 获取连接状态
  */
 const getConnectionStatus = (
   isConnected: boolean,
   connectionStatus: string
-): 'online' | 'connecting' | 'offline' => {
+): ConnectionStatusType => {
   if (isConnected) return 'online';
   if (connectionStatus.includes('连接中') || connectionStatus.includes('重连')) return 'connecting';
   return 'offline';
+};
+
+/**
+ * 根据连接状态获取颜色
+ */
+const getStatusColor = (status: ConnectionStatusType): string => {
+  switch (status) {
+    case 'online': return '#23A55A';
+    case 'connecting': return '#F0B232';
+    default: return '#949BA4';
+  }
+};
+
+/**
+ * 根据连接状态获取指示点颜色
+ */
+const getStatusDotColor = (status: ConnectionStatusType): string => {
+  switch (status) {
+    case 'online': return '#23A55A';
+    case 'connecting': return '#F0B232';
+    default: return '#80848E';
+  }
 };
 
 const HeaderContainer = styled.header`
@@ -52,31 +76,19 @@ const Divider = styled.div`
   margin: 0 12px;
 `;
 
-const StatusBadge = styled.div<{ $status: 'online' | 'connecting' | 'offline' }>`
+const StatusBadge = styled.div<{ $status: ConnectionStatusType }>`
   display: flex;
   align-items: center;
   gap: 6px;
   font-size: 12px;
-  color: ${props => {
-    switch (props.$status) {
-      case 'online': return '#23A55A';
-      case 'connecting': return '#F0B232';
-      default: return '#949BA4';
-    }
-  }};
+  color: ${props => getStatusColor(props.$status)};
 `;
 
-const StatusDot = styled.span<{ $status: 'online' | 'connecting' | 'offline' }>`
+const StatusDot = styled.span<{ $status: ConnectionStatusType }>`
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  background: ${props => {
-    switch (props.$status) {
-      case 'online': return '#23A55A';
-      case 'connecting': return '#F0B232';
-      default: return '#80848E';
-    }
-  }};
+  background: ${props => getStatusDotColor(props.$status)};
 
   ${props => props.$status === 'connecting' && `
     animation: pulse 1.5s ease-in-out infinite;

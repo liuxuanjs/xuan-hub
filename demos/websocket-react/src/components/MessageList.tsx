@@ -165,7 +165,7 @@ const Timestamp = styled.span`
   color: #949BA4;
 `;
 
-const MessageContent = styled.div<{ $status?: MessageStatusType }>`
+const MessageContent = styled.div<{ $status?: MessageStatusType | undefined }>`
   font-size: 14px;
   line-height: 1.4;
   color: #DBDEE1;
@@ -309,7 +309,7 @@ interface MessageItemProps {
   message: EnhancedMessage;
   currentUser: string;
   showHeader: boolean;
-  onRetry?: (messageId: string) => void;
+  onRetry?: ((messageId: string) => void) | undefined;
 }
 
 const MessageItem = memo<MessageItemProps>(({ message, currentUser, showHeader, onRetry }) => {

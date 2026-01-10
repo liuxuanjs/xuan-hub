@@ -147,25 +147,13 @@ export class IndexedDBManager {
       const transaction = this.db!.transaction([STORES.MESSAGES], 'readwrite');
       const store = transaction.objectStore(STORES.MESSAGES);
 
-      let completed = 0;
-      let hasError = false;
+      // 等待事务完成，确保数据一致性
+      transaction.oncomplete = () => resolve();
+      transaction.onerror = () => reject(transaction.error);
+      transaction.onabort = () => reject(new Error('Transaction aborted'));
 
       messages.forEach((message) => {
-        const request = store.put(message);
-
-        request.onsuccess = () => {
-          completed++;
-          if (completed === messages.length && !hasError) {
-            resolve();
-          }
-        };
-
-        request.onerror = () => {
-          if (!hasError) {
-            hasError = true;
-            reject(request.error);
-          }
-        };
+        store.put(message);
       });
     });
   }
@@ -298,42 +286,29 @@ export class IndexedDBManager {
 
   /**
    * 清空会话消息
+   * 使用索引游标删除，避免先查询再删除的性能问题
    */
   async clearConversation(conversationId: string): Promise<void> {
     await this.init();
     this.ensureInitialized();
 
-    const messages = await this.queryMessages({ conversationId, limit: 10000 });
-
     return new Promise((resolve, reject) => {
       const transaction = this.db!.transaction([STORES.MESSAGES], 'readwrite');
       const store = transaction.objectStore(STORES.MESSAGES);
+      const index = store.index('conversationId');
+      const request = index.openCursor(IDBKeyRange.only(conversationId));
 
-      let completed = 0;
-      let hasError = false;
+      transaction.oncomplete = () => resolve();
+      transaction.onerror = () => reject(transaction.error);
+      transaction.onabort = () => reject(new Error('Transaction aborted'));
 
-      if (messages.length === 0) {
-        resolve();
-        return;
-      }
-
-      messages.forEach((message) => {
-        const request = store.delete(message.id);
-
-        request.onsuccess = () => {
-          completed++;
-          if (completed === messages.length && !hasError) {
-            resolve();
-          }
-        };
-
-        request.onerror = () => {
-          if (!hasError) {
-            hasError = true;
-            reject(request.error);
-          }
-        };
-      });
+      request.onsuccess = () => {
+        const cursor = request.result as IDBCursorWithValue;
+        if (cursor) {
+          cursor.delete();
+          cursor.continue();
+        }
+      };
     });
   }
 

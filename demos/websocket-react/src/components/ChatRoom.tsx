@@ -72,7 +72,7 @@ const ChatRoom: React.FC<ChatRoomProps> = observer(({ user, serverUrl, onLogout 
     chatStore.removeNotification(id);
   }, [chatStore]);
 
-  const handleRetryMessage = useCallback((messageId: string): void => {
+  const handleRetryMessage = useCallback((_messageId: string): void => {
     // TODO: 实现消息重试逻辑
     chatStore.showNotification('消息重试功能开发中', 'info');
   }, [chatStore]);

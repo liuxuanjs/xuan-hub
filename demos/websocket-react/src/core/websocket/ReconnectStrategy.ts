@@ -47,7 +47,7 @@ export class ReconnectStrategy {
   private currentDelay: number;
   private lastRetryTime: number | null = null;
   private reconnectTimer: ReturnType<typeof setTimeout> | null = null;
-  private isOnline = navigator.onLine;
+  private isOnline: boolean;
   private onlineListener: (() => void) | null = null;
   private offlineListener: (() => void) | null = null;
   private pendingOnlineCallback: (() => void) | null = null;
@@ -55,6 +55,8 @@ export class ReconnectStrategy {
   constructor(options: Partial<ReconnectOptions> = {}) {
     this.options = { ...DEFAULT_OPTIONS, ...options };
     this.currentDelay = this.options.initialDelay;
+    // SSR 安全检查
+    this.isOnline = typeof navigator !== 'undefined' ? navigator.onLine : true;
     this.setupNetworkListeners();
   }
 

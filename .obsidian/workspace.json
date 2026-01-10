@@ -85,7 +85,7 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "knowledge/frontend/basics/css/099-上下固定中间自适应.md",
+                "file": "knowledge/frontend/browser/跨域与同源策略.md",
                 "mode": "source",
                 "source": false,
                 "backlinks": true,
@@ -100,7 +100,7 @@
                 }
               },
               "icon": "lucide-file",
-              "title": "099-上下固定中间自适应"
+              "title": "跨域与同源策略"
             }
           }
         ],
@@ -177,13 +177,13 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "knowledge/frontend/basics/css/099-上下固定中间自适应.md",
+                "file": "knowledge/frontend/browser/跨域与同源策略.md",
                 "followCursor": false,
                 "showSearch": false,
                 "searchQuery": ""
               },
               "icon": "lucide-list",
-              "title": "099-上下固定中间自适应 的大纲"
+              "title": "跨域与同源策略 的大纲"
             }
           },
           {
@@ -261,8 +261,17 @@
       "obsidian-excalidraw-plugin:新建绘图文件": false
     }
   },
-  "active": "c7c1f8dfa9b3d7d0",
+  "active": "5e922524ee2caf5a",
   "lastOpenFiles": [
+    "未命名.base",
+    "knowledge/frontend/browser/浏览器多进程架构.md",
+    "knowledge/frontend/browser/V8垃圾回收机制.md",
+    "knowledge/frontend/browser/前端缓存.md",
+    "knowledge/frontend/browser/浏览器输入URL后的完整流程解析.md",
+    "knowledge/frontend/browser/跨域与同源策略.md",
+    "knowledge/frontend/browser/浏览器安全.md",
+    "knowledge/frontend/browser/浏览器存储机制.md",
+    "knowledge/frontend/basics/css/099-上下固定中间自适应.md",
     "knowledge/frontend/frameworks/react/React性能优化.md",
     "knowledge/frontend/frameworks/react/React虚拟DOM与Diff.md",
     "knowledge/frontend/frameworks/react/React Hooks原理.md",
@@ -271,11 +280,6 @@
     "knowledge/frontend/browser/DevTools性能调试.md",
     "knowledge/frontend/browser/Event Loop事件循环.md",
     "knowledge/frontend/browser/Web Worker与多线程.md",
-    "knowledge/frontend/browser/浏览器多进程架构.md",
-    "knowledge/frontend/browser/V8垃圾回收机制.md",
-    "knowledge/frontend/browser/浏览器安全.md",
-    "knowledge/frontend/browser/浏览器存储机制.md",
-    "knowledge/frontend/browser/跨域与同源策略.md",
     "CLAUDE.md",
     "knowledge/frontend/basics/css/101-三栏布局.md",
     "knowledge/frontend/basics/css/100-两栏布局.md",
@@ -285,10 +289,6 @@
     "knowledge/frontend/basics/css/063-CSS3新增伪类.md",
     "knowledge/frontend/basics/css/002-CSS-选择符.md",
     "knowledge/frontend/basics/css/007-CSS伪类LVHA.md",
-    "knowledge/frontend/basics/css/014-CSS多列等高.md",
-    "knowledge/frontend/basics/css/011-Flexbox弹性布局.md",
-    "knowledge/frontend/basics/css/005-CSS中哪些属性可以继承.md",
-    "personal/life/TODO清单.md",
     "Work/team/Node版本与包管理器规范 - 团队实施指南.md.tmp.209.1765983288241",
     "Work/team/Node版本与包管理器规范 - 团队实施指南.md.tmp.209.1765983211904",
     "assets/attachments/Pasted image 20251107121127.png",

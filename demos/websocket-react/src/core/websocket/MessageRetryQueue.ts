@@ -52,6 +52,10 @@ export class MessageRetryQueue<T = any> {
   private statusCallbacks: Set<MessageStatusCallback<T>> = new Set();
   private cleanupTimer: ReturnType<typeof setInterval> | null = null;
 
+  // 状态计数器，避免频繁遍历
+  private pendingCount = 0;
+  private failedCount = 0;
+
   constructor(options: Partial<MessageRetryOptions> = {}) {
     this.options = { ...DEFAULT_OPTIONS, ...options };
     this.startCleanupTimer();
@@ -78,10 +82,17 @@ export class MessageRetryQueue<T = any> {
   enqueue(id: string, data: T): QueuedMessage<T> {
     // 检查队列大小
     if (this.queue.size >= this.options.maxQueueSize) {
-      // 移除最旧的消息
+      // 移除最旧的消息并通知
       const oldestKey = this.queue.keys().next().value;
       if (oldestKey) {
+        const oldestMessage = this.queue.get(oldestKey);
+        if (oldestMessage) {
+          oldestMessage.status = 'failed';
+          oldestMessage.error = '队列已满，消息被丢弃';
+          this.notifyStatusChange(oldestMessage);
+        }
         this.remove(oldestKey);
+        console.warn(`[MessageRetryQueue] Queue full, dropped message: ${oldestKey}`);
       }
     }
 
@@ -95,6 +106,7 @@ export class MessageRetryQueue<T = any> {
     };
 
     this.queue.set(id, message);
+    this.pendingCount++;
     this.notifyStatusChange(message);
 
     return message;
@@ -111,6 +123,11 @@ export class MessageRetryQueue<T = any> {
 
     if (message.status === 'sending') {
       return false; // 正在发送中
+    }
+
+    // 更新计数器
+    if (message.status === 'pending') {
+      this.pendingCount--;
     }
 
     message.status = 'sending';
@@ -141,12 +158,14 @@ export class MessageRetryQueue<T = any> {
 
     if (message.retryCount >= message.maxRetries) {
       message.status = 'failed';
+      this.failedCount++;
       this.notifyStatusChange(message);
       console.log(`[MessageRetryQueue] Message ${message.id} failed after ${message.retryCount} retries`);
       return false;
     }
 
     message.status = 'pending';
+    this.pendingCount++;
     this.notifyStatusChange(message);
     this.scheduleRetry(message.id);
     return false;
@@ -202,6 +221,17 @@ export class MessageRetryQueue<T = any> {
       clearTimeout(timer);
       this.retryTimers.delete(id);
     }
+
+    // 更新计数器
+    const message = this.queue.get(id);
+    if (message) {
+      if (message.status === 'pending' || message.status === 'sending') {
+        this.pendingCount = Math.max(0, this.pendingCount - 1);
+      } else if (message.status === 'failed') {
+        this.failedCount = Math.max(0, this.failedCount - 1);
+      }
+    }
+
     return this.queue.delete(id);
   }
 
@@ -220,21 +250,17 @@ export class MessageRetryQueue<T = any> {
   }
 
   /**
-   * 获取待发送消息数量
+   * 获取待发送消息数量（使用计数器，O(1) 复杂度）
    */
   getPendingCount(): number {
-    return Array.from(this.queue.values()).filter(
-      m => m.status === 'pending' || m.status === 'sending'
-    ).length;
+    return this.pendingCount;
   }
 
   /**
-   * 获取失败消息数量
+   * 获取失败消息数量（使用计数器，O(1) 复杂度）
    */
   getFailedCount(): number {
-    return Array.from(this.queue.values()).filter(
-      m => m.status === 'failed'
-    ).length;
+    return this.failedCount;
   }
 
   /**
@@ -251,16 +277,23 @@ export class MessageRetryQueue<T = any> {
     this.retryTimers.forEach(timer => clearTimeout(timer));
     this.retryTimers.clear();
     this.queue.clear();
+    this.pendingCount = 0;
+    this.failedCount = 0;
   }
 
   /**
    * 标记所有消息为待发送
    */
   markAllPending(): void {
+    // 重置计数器
+    this.pendingCount = 0;
+    this.failedCount = 0;
+
     this.queue.forEach(message => {
       if (message.status !== 'sent') {
         message.status = 'pending';
         message.retryCount = 0;
+        this.pendingCount++;
         this.notifyStatusChange(message);
       }
     });
@@ -308,10 +341,24 @@ export class MessageRetryQueue<T = any> {
     expired.forEach(id => {
       const message = this.queue.get(id);
       if (message) {
+        // 更新计数器
+        if (message.status === 'pending' || message.status === 'sending') {
+          this.pendingCount = Math.max(0, this.pendingCount - 1);
+        }
+        this.failedCount++;
+
         message.status = 'failed';
         message.error = '消息已过期';
         this.notifyStatusChange(message);
-        this.remove(id);
+
+        // 直接删除，避免 remove 再次更新计数器
+        const timer = this.retryTimers.get(id);
+        if (timer) {
+          clearTimeout(timer);
+          this.retryTimers.delete(id);
+        }
+        this.queue.delete(id);
+        this.failedCount--; // 删除后减少失败计数
       }
     });
 

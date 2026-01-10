@@ -77,6 +77,9 @@ export function useWebSocket(options: UseWebSocketOptions = {}): UseWebSocketRet
   const [latency, setLatency] = useState(0);
 
   const managerRef = useRef<ConnectionManager | null>(null);
+  const optionsRef = useRef(managerOptions);
+  const autoConnectRef = useRef(autoConnect);
+  const urlRef = useRef(url);
   const callbacksRef = useRef({
     onConnected,
     onDisconnected,
@@ -86,6 +89,13 @@ export function useWebSocket(options: UseWebSocketOptions = {}): UseWebSocketRet
     onReconnectFailed,
     onLatencyUpdate,
   });
+
+  // 更新 options 引用
+  useEffect(() => {
+    optionsRef.current = managerOptions;
+    autoConnectRef.current = autoConnect;
+    urlRef.current = url;
+  }, [managerOptions, autoConnect, url]);
 
   // 更新回调引用
   useEffect(() => {
@@ -102,7 +112,7 @@ export function useWebSocket(options: UseWebSocketOptions = {}): UseWebSocketRet
 
   // 初始化连接管理器
   useEffect(() => {
-    const manager = new ConnectionManager(managerOptions);
+    const manager = new ConnectionManager(optionsRef.current);
     managerRef.current = manager;
 
     // 监听状态变化
@@ -151,9 +161,9 @@ export function useWebSocket(options: UseWebSocketOptions = {}): UseWebSocketRet
       callbacksRef.current.onLatencyUpdate?.(lat);
     });
 
-    // 自动连接
-    if (autoConnect && url) {
-      manager.connect(url);
+    // 自动连接（使用初始值）
+    if (autoConnectRef.current && urlRef.current) {
+      manager.connect(urlRef.current);
     }
 
     // 清理
@@ -161,7 +171,7 @@ export function useWebSocket(options: UseWebSocketOptions = {}): UseWebSocketRet
       manager.destroy();
       managerRef.current = null;
     };
-  }, []); // 只在挂载时初始化一次
+  }, []); // 只在挂载时初始化一次，使用 ref 保存最新值
 
   // 连接方法
   const connect = useCallback((connectUrl: string) => {

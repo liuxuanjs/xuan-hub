@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { observer } from 'mobx-react-lite';
 import styled from 'styled-components';
 import { useStores } from '@/stores/RootStore';
@@ -18,17 +18,17 @@ const AppContainer = styled.div`
 const App: React.FC = observer(() => {
   const { appStore, login, logout } = useStores();
 
-  const handleLogin = async (data: { username: string; serverUrl: string }): Promise<void> => {
+  const handleLogin = useCallback(async (data: { username: string; serverUrl: string }): Promise<void> => {
     try {
       await login(data.username, data.serverUrl);
     } catch (error) {
       console.error('Login failed:', error);
     }
-  };
+  }, [login]);
 
-  const handleLogout = (): void => {
+  const handleLogout = useCallback((): void => {
     logout();
-  };
+  }, [logout]);
 
   return (
     <ErrorBoundary>

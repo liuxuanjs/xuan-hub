@@ -101,8 +101,8 @@ export interface ConnectionInfo {
   maxReconnectAttempts: number;
   latency: number;
   messageQueueLength: number;
-  lastConnectedAt?: number;
-  lastDisconnectedAt?: number;
+  lastConnectedAt?: number | undefined;
+  lastDisconnectedAt?: number | undefined;
 }
 
 // WebSocket 配置选项
@@ -427,22 +427,57 @@ export function isUserActionMessage(msg: WebSocketMessage): msg is UserActionMes
   return msg.type === 'join' || msg.type === 'leave';
 }
 
-export function isPingMessage(msg: any): msg is PingMessage {
-  return msg?.type === 'ping' && typeof msg.timestamp === 'number';
+export function isPingMessage(msg: unknown): msg is PingMessage {
+  return (
+    typeof msg === 'object' &&
+    msg !== null &&
+    'type' in msg &&
+    (msg as Record<string, unknown>).type === 'ping' &&
+    'timestamp' in msg &&
+    typeof (msg as Record<string, unknown>).timestamp === 'number'
+  );
 }
 
-export function isPongMessage(msg: any): msg is PongMessage {
-  return msg?.type === 'pong' && typeof msg.timestamp === 'number';
+export function isPongMessage(msg: unknown): msg is PongMessage {
+  return (
+    typeof msg === 'object' &&
+    msg !== null &&
+    'type' in msg &&
+    (msg as Record<string, unknown>).type === 'pong' &&
+    'timestamp' in msg &&
+    typeof (msg as Record<string, unknown>).timestamp === 'number'
+  );
 }
 
-export function isTypingMessage(msg: any): msg is TypingMessage {
-  return msg?.type === 'typing' && typeof msg.username === 'string';
+export function isTypingMessage(msg: unknown): msg is TypingMessage {
+  return (
+    typeof msg === 'object' &&
+    msg !== null &&
+    'type' in msg &&
+    (msg as Record<string, unknown>).type === 'typing' &&
+    'username' in msg &&
+    typeof (msg as Record<string, unknown>).username === 'string'
+  );
 }
 
-export function isUserListMessage(msg: any): msg is UserListMessage {
-  return msg?.type === 'userList' && Array.isArray(msg.users);
+export function isUserListMessage(msg: unknown): msg is UserListMessage {
+  return (
+    typeof msg === 'object' &&
+    msg !== null &&
+    'type' in msg &&
+    (msg as Record<string, unknown>).type === 'userList' &&
+    'users' in msg &&
+    Array.isArray((msg as Record<string, unknown>).users)
+  );
 }
 
-export function isErrorMessage(msg: any): msg is ErrorMessage {
-  return msg?.type === 'error' && typeof msg.content === 'string';
+export function isErrorMessage(msg: unknown): msg is ErrorMessage {
+  return (
+    typeof msg === 'object' &&
+    msg !== null &&
+    'type' in msg &&
+    (msg as Record<string, unknown>).type === 'error' &&
+    'content' in msg &&
+    typeof (msg as Record<string, unknown>).content === 'string'
+  );
 }
