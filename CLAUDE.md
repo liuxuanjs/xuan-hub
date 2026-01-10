@@ -4,53 +4,69 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## 项目概述
 
-这是一个个人技术知识库，包含前端/后端技术文档、工作规范、示例项目等内容。主要使用 Obsidian 管理。
+个人技术知识库，包含前端/后端技术文档、工作规范、示例项目。使用 Obsidian 管理，pnpm 作为包管理器。
 
 ## 目录结构
 
-- `knowledge/` - 技术知识库
-  - `frontend/basics/` - HTML、CSS、JavaScript 基础
-  - `frontend/browser/` - 浏览器原理与 DevTools
-  - `frontend/frameworks/` - React 等框架
-  - `frontend/engineering/` - 构建工具、包管理、微前端
-  - `frontend/libraries/` - MobX、WebSocket、Node、Webpack
-  - `frontend/solutions/` - 技术解决方案
-  - `backend/` - 后端知识（Nginx 等）
+- `knowledge/` - 技术知识库（前端基础、框架、工程化、浏览器、后端）
 - `work/` - 工作相关（项目文档、团队规范）
-- `tools/` - 工具使用指南
-- `demos/` - 示例项目（React/Vue）
-- `personal/` - 个人内容
-- `resources/` - 模板与附件
+- `demos/` - 示例项目
+- `resources/templates/` - 文档模板
 
-## 常用命令
+## Demo 项目命令
 
-### Demo 项目
+### websocket-react（Webpack + React 18 + MobX）
 ```bash
-cd demos/<project-name>
-pnpm install && pnpm dev
+cd demos/websocket-react
+pnpm install
+pnpm dev          # 启动前端开发服务
+pnpm server       # 启动 WebSocket 服务端
+pnpm dev:full     # 同时启动前后端
+pnpm lint         # ESLint 检查
+pnpm type-check   # TypeScript 类型检查
 ```
 
-### 生成文档
-- 知识卡：`整理 X 知识卡`
-- 专题文：`写 X 专题文档`
-- 操作手册：`制作 X 操作手册`
+### websocket-vue（Vite + Vue 3 + Pinia）
+```bash
+cd demos/websocket-vue
+pnpm install
+pnpm dev          # 启动前端开发服务
+pnpm server       # 启动 WebSocket 服务端
+pnpm dev:full     # 同时启动前后端
+pnpm lint         # ESLint 检查
+pnpm type-check   # TypeScript 类型检查
+```
+
+### memory-leak-react（Vite + React 18）
+```bash
+cd demos/memory-leak-react
+pnpm install
+pnpm dev          # 启动开发服务
+pnpm lint         # ESLint 检查
+```
 
 ## 文档写作规范
 
-`knowledge/` 目录下的文档遵循 `.cursor/rules/knowledge-base-writing.mdc` 规则：
+`knowledge/` 目录下的文档遵循 `.cursor/rules/knowledge-base-writing.mdc` 规则。
 
+### 核心原则
 - **目标**：可检索、可复用、可执行
-- **风格**：全中文，先结论后论证，列表优先
-- **禁止**：博客口吻、空洞铺垫
+- **风格**：全中文，先结论后论证，列表优先，短句优先
+- **禁止**：博客口吻（"大家好"、"本文"）、空洞铺垫、SEO 优化
 
-### 文档类型
+### 文档类型与触发词
 | 类型 | 字数 | 触发词 | 模板 |
 |------|------|--------|------|
 | 知识卡 | ≤500 | "整理 X 知识卡" | `resources/templates/知识卡模板.md` |
 | 专题文 | 500-2000 | "写 X 专题文档" | `resources/templates/专题文模板.md` |
 | 操作手册 | 1000-3000 | "制作 X 操作手册" | `resources/templates/操作手册模板.md` |
 
-### 元数据
+### 文档结构
+- **知识卡**：定义 → 核心要点（3-5条）→ 示例代码 → 速查命令 → 相关链接
+- **专题文**：概览（问题/方案/结论）→ 背景 → 核心概念表格 → 实现步骤 → 故障排查表 → 最佳实践 → 参考
+- **操作手册**：概览（目标/时长/风险/前提）→ 执行清单 → 前置准备 → 分阶段步骤 → 验证检查表 → 回滚方案
+
+### 元数据格式
 ```yaml
 ---
 aliases: ["别名"]
@@ -59,3 +75,14 @@ tags: ["技术栈", "场景"]
 updated: YYYY-MM-DD
 ---
 ```
+
+### 代码与链接规范
+- 代码块使用语法高亮：`bash`、`ts`、`json`、`yaml`
+- 命令注释用 `#`，保持可复制运行
+- 默认 macOS，必要时标注平台差异
+- 内链：`[[文档标题]]` 或 `[[路径#章节]]`
+- 外链：`[描述](URL)`，禁止裸链接
+
+### 结构化标识
+- `✅ 推荐` `❌ 禁止` `⚠️ 注意` `🔧 工具`
+- 清单：`- [ ]` 未完成，`- [x]` 已完成
