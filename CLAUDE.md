@@ -26,17 +26,6 @@ pnpm lint         # ESLint 检查
 pnpm type-check   # TypeScript 类型检查
 ```
 
-### websocket-vue（Vite + Vue 3 + Pinia）
-```bash
-cd demos/websocket-vue
-pnpm install
-pnpm dev          # 启动前端开发服务
-pnpm server       # 启动 WebSocket 服务端
-pnpm dev:full     # 同时启动前后端
-pnpm lint         # ESLint 检查
-pnpm type-check   # TypeScript 类型检查
-```
-
 ### memory-leak-react（Vite + React 18）
 ```bash
 cd demos/memory-leak-react

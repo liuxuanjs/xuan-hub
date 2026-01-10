@@ -23,8 +23,7 @@ xuan-hub/
 │   └── cursor/         # Cursor IDE 配置
 ├── demos/              # 示例项目
 │   ├── memory-leak-react/
-│   ├── websocket-react/
-│   └── websocket-vue/
+│   └── websocket-react/
 ├── personal/           # 个人内容
 │   ├── life/           # 生活待办
 │   └── career/         # 职业发展
@@ -60,4 +59,3 @@ xuan-hub/
 ### 示例项目
 - [内存泄漏示例](./demos/memory-leak-react/) - React 内存泄漏演示
 - [WebSocket React](./demos/websocket-react/) - React WebSocket 示例
-- [WebSocket Vue](./demos/websocket-vue/) - Vue WebSocket 示例
