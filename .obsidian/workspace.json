@@ -13,7 +13,7 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Work/projects/index.md",
+                "file": "Tools/claude/开发工作流.md",
                 "mode": "source",
                 "source": false,
                 "backlinks": true,
@@ -28,7 +28,7 @@
                 }
               },
               "icon": "lucide-file",
-              "title": "index"
+              "title": "开发工作流"
             }
           }
         ]
@@ -104,13 +104,13 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "Work/projects/index.md",
+                "file": "Tools/claude/开发工作流.md",
                 "followCursor": false,
                 "showSearch": false,
                 "searchQuery": ""
               },
               "icon": "lucide-list",
-              "title": "index 的大纲"
+              "title": "开发工作流 的大纲"
             }
           },
           {
@@ -190,6 +190,14 @@
   },
   "active": "a782ec2fcf97f00b",
   "lastOpenFiles": [
+    "Tools/claude/常用斜杠命令.md",
+    "Tools/claude/安装插件.md",
+    "Tools/claude/开发工作流.md",
+    "Tools/claude/前置准备.md",
+    "Tools/claude/Claude-Code-完全指南.md",
+    "Tools/claude/Claude-Code-开发工作流指南.md",
+    "resources/attachments/iShot_2026-01-11_21.28.00.mp4",
+    "Work/projects/index.md",
     "demos/websocket-react/node_modules/@typescript-eslint",
     "demos/websocket-react/node_modules/@types",
     "demos/websocket-react/node_modules/@babel",
@@ -217,20 +225,12 @@
     "knowledge/frontend/basics/css/099-上下固定中间自适应.md",
     "knowledge/frontend/frameworks/react/React性能优化.md",
     "knowledge/frontend/frameworks/react/React虚拟DOM与Diff.md",
-    "knowledge/frontend/frameworks/react/React Hooks原理.md",
-    "knowledge/frontend/frameworks/react/React合成事件.md",
-    "knowledge/frontend/frameworks/react/React Fiber架构.md",
-    "knowledge/frontend/browser/DevTools性能调试.md",
-    "knowledge/frontend/browser/Event Loop事件循环.md",
-    "knowledge/frontend/browser/Web Worker与多线程.md",
     "Work/team/Node版本与包管理器规范 - 团队实施指南.md.tmp.209.1765983288241",
-    "Work/team/Node版本与包管理器规范 - 团队实施指南.md.tmp.209.1765983211904",
     "assets/attachments/Pasted image 20251107121127.png",
     "assets/attachments/Pasted image 20251107120818.png",
     "assets/attachments/Pasted image 20251106141753.png",
     "assets/attachments/Pasted image 20251106141719.png",
     "Resources/assets/attachments/action-state-view.png",
-    "assets/attachments",
     "Resources/assets/attachments/observed-refs.png",
     "Resources/assets/attachments/Pasted image 20250807144447.png",
     "Resources/assets/attachments/Pasted image 20240429135115.png",

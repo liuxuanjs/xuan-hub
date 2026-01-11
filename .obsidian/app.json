@@ -1,5 +1,5 @@
 {
-  "attachmentFolderPath": "assets/attachments",
+  "attachmentFolderPath": "resources/attachments",
   "newFileLocation": "current",
   "userIgnoreFilters": [
     ".git",
