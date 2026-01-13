@@ -13,7 +13,7 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Tools/claude/开发工作流.md",
+                "file": "Tools/claude/安装插件.md",
                 "mode": "source",
                 "source": false,
                 "backlinks": true,
@@ -28,7 +28,7 @@
                 }
               },
               "icon": "lucide-file",
-              "title": "开发工作流"
+              "title": "安装插件"
             }
           }
         ]
@@ -104,13 +104,13 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "Tools/claude/开发工作流.md",
+                "file": "Tools/claude/安装插件.md",
                 "followCursor": false,
                 "showSearch": false,
                 "searchQuery": ""
               },
               "icon": "lucide-list",
-              "title": "开发工作流 的大纲"
+              "title": "安装插件 的大纲"
             }
           },
           {
@@ -191,10 +191,10 @@
   "active": "a782ec2fcf97f00b",
   "lastOpenFiles": [
     "Tools/claude/常用斜杠命令.md",
-    "Tools/claude/安装插件.md",
-    "Tools/claude/开发工作流.md",
-    "Tools/claude/前置准备.md",
     "Tools/claude/Claude-Code-完全指南.md",
+    "Tools/claude/前置准备.md",
+    "Tools/claude/开发工作流.md",
+    "Tools/claude/安装插件.md",
     "Tools/claude/Claude-Code-开发工作流指南.md",
     "resources/attachments/iShot_2026-01-11_21.28.00.mp4",
     "Work/projects/index.md",
